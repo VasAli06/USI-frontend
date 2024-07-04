@@ -3,6 +3,6 @@
 
 <template>
   <main>
-    <TheWelcome />
   </main>
 </template>
+<style lang="sccs" scoped></style>
