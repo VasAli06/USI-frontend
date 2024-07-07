@@ -13,33 +13,34 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/clanek', // odstraněna diakritika
+    path: '/clanek', 
     name: 'article',
     component: ArticleView
   },
   {
-    path: '/clanky', // odstraněna diakritika
+    path: '/clanky', 
     name: 'allArticles',
     component: AllArticlesView
   },
   {
-    path: '/chci-byt-soucasti', // odstraněna diakritika
+    path: '/chci-byt-soucasti', 
     name: 'joinus',
     component: JoinUsView
   },
   {
-    path: '/skoly', // odstraněna diakritika
+    path: '/skoly',
     name: 'schools',
     component: SchoolView
   },
   {
-    path: '/o-nas', // odstraněna diakritika
+    path: '/o-nas',
     name: 'about',
     component: AboutView
   }
 ]
 
 const router = createRouter({
+  linkActiveClass: 'active-route',
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
