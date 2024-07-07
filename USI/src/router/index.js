@@ -4,41 +4,44 @@ import SchoolView from '../views/SchoolsView.vue'
 import JoinUsView from '../views/JoinUsView.vue'
 import ArticleView from '../views/ArticleView.vue'
 import AllArticlesView from '../views/AllArticlesView.vue'
+import AboutView from '../views/AboutView.vue'
+
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: HomeView
+  },
+  {
+    path: '/clanek', // odstraněna diakritika
+    name: 'article',
+    component: ArticleView
+  },
+  {
+    path: '/clanky', // odstraněna diakritika
+    name: 'allArticles',
+    component: AllArticlesView
+  },
+  {
+    path: '/chci-byt-soucasti', // odstraněna diakritika
+    name: 'joinus',
+    component: JoinUsView
+  },
+  {
+    path: '/skoly', // odstraněna diakritika
+    name: 'schools',
+    component: SchoolView
+  },
+  {
+    path: '/o-nas', // odstraněna diakritika
+    name: 'about',
+    component: AboutView
+  }
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/članek',
-      name: 'article',
-      component: ArticleView
-    },
-    {
-      path: '/članky',
-      name: 'allArticles',
-      component: AllArticlesView
-    },
-    {
-      path: '/chci-být-součástí',
-      name: 'joinus',
-      component: JoinUsView
-    },
-    {
-      path: '/školy',
-      name: 'schools',
-      component: SchoolView
-    },
-    {
-      path: '/o-nás',
-      name: 'about',
-      component: () => import('../views/AboutView.vue')
-    }
-  ]
+  routes
 })
 
 export default router

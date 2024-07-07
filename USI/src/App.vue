@@ -4,32 +4,36 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
   <header>
-    <article>
-      <img src="/logo-cerna.png" alt="logo Unie škol inovativních">
-      <nav>
+    <img src="/logo-cerna.png" alt="logo Unie škol inovativních">
+    <nav>
+      <article>
         <a href="">
           <RouterLink to="/">Domů</RouterLink>
         </a>
         <a href="">
-          <RouterLink to="/o-nás">O nás</RouterLink>
+          <RouterLink to="/o-nas">O nás</RouterLink>
         </a>
         <a href="">
-          <RouterLink to="/školy">Školy v UŠI</RouterLink>
+          <RouterLink to="/skoly">Školy v UŠI</RouterLink>
         </a>
         <a href="">
-          <RouterLink to="/chci-být-součástí">Chci být součástí</RouterLink>
+          <RouterLink to="/chci-byt-soucasti">Chci být součástí</RouterLink>
         </a>
         <a href="">
-          <RouterLink to="/članky">Příspěvky</RouterLink>
+          <RouterLink to="/clanky">Příspěvky</RouterLink>
         </a>
-      </nav>
 
-    </article>
+      </article>
+
+    </nav>
+
 
   </header>
 
 
   <RouterView />
+
+  
   <footer>
 
   </footer>
@@ -39,39 +43,63 @@ import { RouterLink, RouterView } from 'vue-router'
 body {
   font-family: 'Rubik', sans-serif;
   font-weight: 400;
-  /* Normal */
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
 
 <style scoped lang="scss">
+@use "assets/variables.scss" as var;
+
 header {
-  width: 100%;
+  width: 75%;
+
+  padding-top: 30px;
+
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 
-  article {
-    width: 75%;
+  img {
+    width: 12%;
+  }
+
+  nav {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    gap: 50px;
 
-    img {
-      width: 10%;
-    }
-
-    nav {
-      background-color: blue;
+    article {
       display: flex;
       flex-direction: row;
-      gap: 50px;
+      background-color: var.$primary-color;
+      gap: 30px;
+      height: 70%;
+      align-items: center;
+      padding-left: 40px;
+      padding-right: 40px;
+      border-radius: 50px;
 
       a {
         text-decoration: none;
         color: white;
+        transition: 0.3s ease;
+
+        &:hover {
+          transition: 0.3s ease;
+          color: var.$accent-color;
+        }
+
+
       }
     }
+
+
+
   }
 
 
