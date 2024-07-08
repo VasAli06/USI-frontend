@@ -1,30 +1,19 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-
+import { RouterLink, RouterView,useRoute } from 'vue-router'
 
 </script>
 
 <template>
-  <header>
+  <header v-if="$route.name !== 'joinus'">
     <img src="/logo-cerna.png" alt="logo Unie škol inovativních">
     <nav>
       <article>
-        <a href="">
           <RouterLink to="/">Domů</RouterLink>
-        </a>
-        <a href="">
           <RouterLink to="/o-nas">O nás</RouterLink>
-        </a>
-        <a href="">
           <RouterLink to="/skoly">Školy v UŠI</RouterLink>
-        </a>
-        <a href="">
           <RouterLink to="/chci-byt-soucasti">Chci být součástí</RouterLink>
-        </a>
-        <a href="">
           <RouterLink to="/clanky">Příspěvky</RouterLink>
-        </a>
-
+      
       </article>
 
     </nav>
@@ -73,7 +62,7 @@ import { RouterLink, RouterView } from 'vue-router'
           <a href="https://www.youtube.com/@unieskolinovativnich"><i class="fa-brands fa-youtube"></i></a>
           <a href="https://www.linkedin.com/company/unie-%C5%A1kol-inovativn%C3%ADch/"><i
               class="fa-brands fa-linkedin"></i></a>
-          <a href=""><i class="fa-brands fa-x-twitter"></i></a>
+          <a href=""><i class="fa-brands fa-twitter"></i></a>
         </section>
         <hr>
         <section class="contact">
@@ -159,7 +148,8 @@ header {
           color: var.$accent-color;
         }
       }
-      .active-route{
+
+      .active-route {
         color: var.$accent-color;
       }
     }

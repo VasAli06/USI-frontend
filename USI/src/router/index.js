@@ -13,9 +13,10 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/clanek', 
+    path: '/clanek/:title',
     name: 'article',
-    component: ArticleView
+    component: ArticleView,
+    props: true
   },
   {
     path: '/clanky', 
