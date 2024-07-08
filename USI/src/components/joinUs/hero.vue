@@ -44,7 +44,7 @@
   }
 
   .text-container {
-    width: 75%;
+    width: 70%;
     color: white;
     position: absolute;
     display: flex;
@@ -60,7 +60,7 @@
 
 
   header {
-    width: 75%;
+    width: 70%;
     padding-top: 30px;
     display: flex;
     flex-direction: row;

@@ -78,10 +78,10 @@ const prevPage = () => {
 <style lang="scss" scoped>
 @use "@/assets/variables.scss" as var;
 
-main {
-  width: 75%;
-  padding-top: 80px;
-  margin-bottom: 100px;
+//main {
+  //width: 75%;
+  //padding-top: 80px;
+  //margin-bottom: 100px;
 
   .month-container {
     display: flex;
@@ -136,5 +136,5 @@ main {
       }
     }
   }
-}
+//}
 </style>

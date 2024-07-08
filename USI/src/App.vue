@@ -1,19 +1,30 @@
 <script setup>
-import { RouterLink, RouterView,useRoute } from 'vue-router'
+import { RouterLink, RouterView, useRoute } from 'vue-router'
+import { computed } from 'vue'
 
+const route = useRoute()
+
+const isVisible = computed(() => {
+  // Adjust your logic based on route names
+  if (route.name === 'joinus' || route.name === 'home') {
+    return false
+  } else {
+    return true
+  }
+})
 </script>
 
 <template>
-  <header v-if="$route.name !== 'joinus'">
+  <header v-if="isVisible">
     <img src="/logo-cerna.png" alt="logo Unie škol inovativních">
     <nav>
       <article>
-          <RouterLink to="/">Domů</RouterLink>
-          <RouterLink to="/o-nas">O nás</RouterLink>
-          <RouterLink to="/skoly">Školy v UŠI</RouterLink>
-          <RouterLink to="/chci-byt-soucasti">Chci být součástí</RouterLink>
-          <RouterLink to="/clanky">Příspěvky</RouterLink>
-      
+        <RouterLink to="/">Domů</RouterLink>
+        <RouterLink to="/o-nas">O nás</RouterLink>
+        <RouterLink to="/skoly">Školy v UŠI</RouterLink>
+        <RouterLink to="/chci-byt-soucasti">Chci být součástí</RouterLink>
+        <RouterLink to="/clanky">Příspěvky</RouterLink>
+
       </article>
 
     </nav>
@@ -99,6 +110,8 @@ import { RouterLink, RouterView,useRoute } from 'vue-router'
 body {
   font-family: 'Rubik', sans-serif;
   font-weight: 400;
+  overflow-x: hidden;
+
 }
 
 #app {
@@ -106,13 +119,18 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
+main {
+  width: 70%;
+  padding-top: 80px;
+}
 </style>
 
 <style scoped lang="scss">
 @use "assets/variables.scss" as var;
 
 header {
-  width: 75%;
+  width: 70%;
   padding-top: 30px;
   display: flex;
   flex-direction: row;
@@ -167,7 +185,7 @@ footer {
   font-size: 18px;
 
   .footer-container {
-    width: 75%;
+    width: 70%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 

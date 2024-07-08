@@ -20,10 +20,5 @@ import Hero from '@/components/joinUs/hero.vue'
 @use "@/assets/variables.scss" as var;
 
 
-main {
-  width: 75%;
-  padding-top: 30px;
 
-
-}
 </style>

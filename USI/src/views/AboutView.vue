@@ -66,9 +66,6 @@ import JoinUsBanner from '@/components/about/JoinUsBanner.vue'
 <style lang="scss" scoped>
 @use "@/assets/variables.scss" as var;
 
-main {
-  width: 75%;
-  padding-top: 90px;
 
   .text-about-container {
     display: flex;
@@ -83,5 +80,5 @@ main {
   }
 
 
-}
+
 </style>

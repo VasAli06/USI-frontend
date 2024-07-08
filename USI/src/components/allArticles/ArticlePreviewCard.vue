@@ -14,7 +14,7 @@ const props = defineProps(['data'])
             <p>{{ props.data.date }}</p>
 
         </section>
-        <p class="preview-text basic-text">{{ props.data.text.split("/r/n")[0].substring(0, 250) }}......</p>
+        <p class="preview-text basic-text">{{ props.data.text.replaceAll("/r/n", "").substring(0, 350) }}......</p>
 
         <router-link :to="{ name: 'article', params: { title: props.data.title } }">
             Přečíst
