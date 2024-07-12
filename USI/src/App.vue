@@ -187,7 +187,8 @@ footer {
   .footer-container {
     width: 70%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 50px;
 
     .heading {
       font-size: 35px;
