@@ -39,6 +39,8 @@ const paginatedArticles = computed(() => {
   return sortedArticlesByMonth.slice(start, end);
 });
 
+console.log(paginatedArticles.value);
+
 const nextPage = () => {
   if (currentPage.value < totalPages.value) {
     currentPage.value++;
@@ -79,62 +81,62 @@ const prevPage = () => {
 @use "@/assets/variables.scss" as var;
 
 //main {
-  //width: 75%;
-  //padding-top: 80px;
-  //margin-bottom: 100px;
+//width: 75%;
+//padding-top: 80px;
+//margin-bottom: 100px;
 
-  .month-container {
+.month-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .month-name {
+    font-size: 28px;
+    border-radius: 40px;
+    width: fit-content;
+    padding: 10px 20px;
+    background-color: var.$primary-color;
+    color: white;
+    margin-top: 60px;
+    text-transform: uppercase;
+  }
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.pagination-controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 40px;
+
+  div {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-
-    .month-name {
-      font-size: 28px;
-      border-radius: 40px;
-      width: fit-content;
-      padding: 10px 20px;
-      background-color: var.$primary-color;
-      color: white;
-      margin-top: 60px;
-      text-transform: uppercase;
-    }
+    flex-direction: row;
+    gap: 40px;
   }
 
-  .cards-container {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-  }
+  button {
+    padding: 10px 15px;
+    border: none;
+    background-color: var.$primary-color;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 200px;
 
-  .pagination-controls {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 40px;
+    &:disabled {
 
-    div {
-      display: flex;
-      flex-direction: row;
-      gap: 40px;
-    }
-
-    button {
-      padding: 10px 15px;
-      border: none;
-      background-color: var.$primary-color;
-      color: white;
-      cursor: pointer;
-      border-radius: 5px;
-      width: 200px;
-
-      &:disabled {
-
-        background-color: #5a5a5a;
-        cursor: not-allowed;
-      }
+      background-color: #5a5a5a;
+      cursor: not-allowed;
     }
   }
-//}
-</style>
+}
+
+//}</style>

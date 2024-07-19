@@ -25,7 +25,7 @@ const getTwoLatestArticles = (articles) => {
 
   <main>
     <AboutUSI></AboutUSI>
- 
+
     <article class="articles-container">
       <h2>Nejnovější články</h2>
       <ArticlePreviewCard v-for="article in getTwoLatestArticles(articleData.articles)" :key="article.id"
@@ -35,24 +35,23 @@ const getTwoLatestArticles = (articles) => {
 
   </main>
   <article class="schools-in-USI-container">
-      <h2>Zapojené školy do UŠI</h2>
-      <ScrollingLogos></ScrollingLogos>
-    </article>
+    <h2>Zapojené školy do UŠI</h2>
+    <ScrollingLogos></ScrollingLogos>
+  </article>
 </template>
 
 <style lang="scss" scoped>
 @use "@/assets/variables.scss" as var;
 
 .articles-container {
-  h2 {
-    margin-bottom: -15px;
-  }
-
   display: flex;
   flex-direction: column;
   gap: 40px;
   margin-bottom: 100px;
 
+  h2 {
+    margin-bottom: -15px;
+  }
 }
 
 .schools-in-USI-container {
