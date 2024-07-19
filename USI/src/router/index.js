@@ -19,12 +19,12 @@ const routes = [
     props: true
   },
   {
-    path: '/clanky', 
+    path: '/clanky',
     name: 'allArticles',
     component: AllArticlesView
   },
   {
-    path: '/chci-byt-soucasti', 
+    path: '/chci-byt-soucasti',
     name: 'joinus',
     component: JoinUsView
   },
@@ -37,6 +37,11 @@ const routes = [
     path: '/o-nas',
     name: 'about',
     component: AboutView
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/LoginView.vue')
   }
 ]
 

@@ -3,19 +3,28 @@ import ArticlePreviewCard from '@/components/allArticles/ArticlePreviewCard.vue'
 import ScrollingLogos from '@/components/home/ScrollingLogos.vue';
 import AboutUSI from '@/components/home/AboutUSI.vue';
 import Hero from '@/components/home/Hero.vue';
+import { ref, watch } from 'vue';
 
 import { useArticlesStore } from '@/stores/articles';
-const articleData = useArticlesStore();
+const articleStore = useArticlesStore();
 
-const getTwoLatestArticles = (articles) => {
-  return articles
+const twoLatestArticles = ref(null)
+
+function getTwoLatestArticles() {
+  twoLatestArticles.value = articleStore.articles
     .map(article => ({
       ...article,
-      dateObj: new Date(article.date.split('.').reverse().join('-'))
+      dateObj: new Date(article.createdAt)
     }))
     .sort((a, b) => b.dateObj - a.dateObj)
     .slice(0, 2);
-};
+}
+
+watch(() => articleStore.articles, () => {
+  getTwoLatestArticles();
+}, {
+  immediate: true
+})
 
 </script>
 
@@ -28,8 +37,7 @@ const getTwoLatestArticles = (articles) => {
 
     <article class="articles-container">
       <h2>Nejnovější články</h2>
-      <ArticlePreviewCard v-for="article in getTwoLatestArticles(articleData.articles)" :key="article.id"
-        :data="article" />
+      <ArticlePreviewCard v-for="article in twoLatestArticles" :key="article.id" :data="article" />
     </article>
 
 

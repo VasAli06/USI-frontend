@@ -1,13 +1,19 @@
 <script setup>
 import { useArticlesStore } from '@/stores/articles'
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
+import { marked } from 'marked';
 
-const articleData = useArticlesStore();
+const articleStore = useArticlesStore();
 
 const props = defineProps(['title']);
+console.log(articleStore.articles);
 
-const article = computed(() => {
-  return articleData.articles.find(article => article.title === props.title);
+const article = ref(null)
+
+watch(() => articleStore.articles, (newVal, oldVal) => {
+  article.value = articleStore.articles.find(article => article.title === props.title);
+}, {
+  immediate: true
 });
 
 import { useRouter } from 'vue-router'
@@ -24,7 +30,7 @@ const xLink = computed(() => {
   return `https://twitter.com/share?url=${encodeURIComponent(baseUrl + router.currentRoute.value.fullPath)}`;
 });
 
-function copyToClipboard ()  {
+function copyToClipboard() {
   navigator.clipboard.writeText(baseUrl + router.currentRoute.value.fullPath).then(() => {
     alert('Odkaz na článek bya zkopírován do schránky!');
   }).catch(err => {
@@ -42,7 +48,7 @@ function copyToClipboard ()  {
       <section class="wrapper">
         <section class="date-container">
           <i class="fa-solid fa-calendar"></i>
-          <p>{{ article.date }}</p>
+          <p>{{ (new Date(article.createdAt)).toLocaleDateString('cs-CZ') }}</p>
         </section>
         <section class="share-conainer">
           <p>Sdílet:</p>
@@ -54,11 +60,7 @@ function copyToClipboard ()  {
       </section>
     </article>
 
-    <article v-if="article" class="article-text-container">
-      <p v-for="paragraf in articleData.parseText(article.text)" :key="paragraf" class="basic-text">
-        {{ paragraf }}
-      </p>
-    </article>
+    <article v-if="article" class="article-text-container" v-html="marked(article.content)"></article>
 
     <article class="gallery-container"></article>
   </main>
@@ -136,11 +138,18 @@ function copyToClipboard ()  {
     }
   }
 }
+</style>
 
+<style lang="scss">
 .article-text-container {
   display: flex;
   flex-direction: column;
   gap: 30px;
   margin-bottom: 150px;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
 }
 </style>

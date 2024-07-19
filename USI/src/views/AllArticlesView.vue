@@ -1,12 +1,22 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useArticlesStore } from '@/stores/articles';
-const articleData = useArticlesStore();
 import ArticlePreviewCard from '@/components/allArticles/ArticlePreviewCard.vue';
 
-const groupAndSortArticlesByMonth = (articles) => {
+const articleStore = useArticlesStore();
+
+const itemsPerPage = 3;
+const currentPage = ref(1);
+const totalPages = computed(() => Math.ceil(articleStore.articles.length / itemsPerPage));
+
+function formatShowArticles() {
+  const articles = articleStore.articles;
+
   const groupedArticles = articles.reduce((acc, article) => {
-    const [day, month, year] = article.date.split('.').map(Number);
+    const date = new Date(article.createdAt);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
     const monthName = new Date(year, month - 1).toLocaleString('cs-CZ', { month: 'long' });
     const yearMonth = `${year}-${month.toString().padStart(2, '0')}`;
     if (!acc[yearMonth]) {
@@ -20,26 +30,23 @@ const groupAndSortArticlesByMonth = (articles) => {
     entry.articles.sort((a, b) => new Date(b.year, b.month - 1, b.day) - new Date(a.year, a.month - 1, a.day));
   });
 
-  return groupedArticles;
-};
+  const sortedArticlesByMonth = Object.entries(groupedArticles)
+    .sort(([a], [b]) => b.localeCompare(a))
+    .map(([key, value]) => ({ ...value, yearMonth: key }));
 
-const articlesByMonth = groupAndSortArticlesByMonth(articleData.articles);
-
-const sortedArticlesByMonth = Object.entries(articlesByMonth)
-  .sort(([a], [b]) => b.localeCompare(a))
-  .map(([key, value]) => ({ ...value, yearMonth: key }));
-
-const itemsPerPage = 3;
-const currentPage = ref(1);
-const totalPages = computed(() => Math.ceil(sortedArticlesByMonth.length / itemsPerPage));
-
-const paginatedArticles = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
   const end = start + itemsPerPage;
   return sortedArticlesByMonth.slice(start, end);
-});
+}
 
-console.log(paginatedArticles.value);
+const shownArticles = ref([]);
+
+watch(() => [currentPage.value, articleStore.articles], () => {
+  shownArticles.value = formatShowArticles();
+  console.log("HEHEE");
+}, {
+  immediate: true
+});
 
 const nextPage = () => {
   if (currentPage.value < totalPages.value) {
@@ -59,7 +66,7 @@ const prevPage = () => {
 <template>
   <main>
     <h1>Publikované články</h1>
-    <article v-for="({ yearMonth, monthName, articles }) in paginatedArticles" :key="yearMonth" class="month-container">
+    <article v-for="({ yearMonth, monthName, articles }) in shownArticles" :key="yearMonth" class="month-container">
       <p class="month-name">{{ monthName }}</p>
       <article class="cards-container">
         <ArticlePreviewCard v-for="article in articles" :key="article.id" :data="article" />
