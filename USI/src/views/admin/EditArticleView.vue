@@ -12,8 +12,8 @@
 import { ref, watch } from "vue";
 import { useArticlesStore } from "@/stores/articles";
 import { useRoute } from "vue-router";
-import { VMarkdownEditor } from 'vue3-markdown'
-import 'vue3-markdown/dist/style.css'
+import { VMarkdownEditor } from '@/components/markdown/vue3-markdown.js' // i have edited the component so it has preview turned on by default, that's why it can't be in node_modules
+import '@/components/markdown/style.css'
 import axios from 'axios';
 import { useGlobalStore } from "@/stores/global";
 
@@ -40,6 +40,7 @@ async function handleUpload(file) {
                 const imageUrl = `${globalStore.apiUrl}/image/${response.data.id}`;
                 resolve(imageUrl);
             } catch (error) {
+                alert('Při nahrávání obrázku nastala chyba, zkuste obrázek zmenšit, zkontrolujte připojení k internetu nebo použijte jiný formát souboru.');
                 reject(error);
             }
         };
@@ -104,4 +105,4 @@ div.edit-article {
         }
     }
 }
-</style>
+</style>@/components/markdown/vue3-markdown.js
