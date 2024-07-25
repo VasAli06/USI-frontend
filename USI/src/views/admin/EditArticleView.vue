@@ -3,7 +3,7 @@
         <form @submit.prevent="editArticle">
             <input class="title" v-model="article.title" type="text" placeholder="Název článku" />
             <VMarkdownEditor v-model="article.content" locale="en" :upload-action="handleUpload" />
-            <button type="submit">Upravit článek</button>
+            <button type="submit" @click="editArticle">Upravit článek</button>
         </form>
     </div>
 </template>
@@ -22,15 +22,39 @@ const articleStore = useArticlesStore();
 
 const route = useRoute();
 const title = route.params.title;
-console.log(title);
 
 const article = ref(null)
 
 async function handleUpload(file) {
-    console.log(file)
-    const response = await axios.post('/image', file)
-    const imageUrl = `${globalStore.apiUrl}/image/${response.data.id}`
-    return imageUrl
+    console.log(file);
+    const reader = new FileReader();
+
+    return new Promise((resolve, reject) => {
+        reader.onload = async function (event) {
+            const rawImageData = event.target.result;
+            console.log(rawImageData);
+
+            try {
+                const response = await axios.post('/image', { image: rawImageData });
+
+                const imageUrl = `${globalStore.apiUrl}/image/${response.data.id}`;
+                resolve(imageUrl);
+            } catch (error) {
+                reject(error);
+            }
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file); // or reader.readAsBinaryString(file);
+    });
+}
+
+async function editArticle() {
+    try {
+        await axios.put(`/article/${article.value.id}`, { article: article.value });
+        articleStore.articles = articleStore.articles.map(article => article.id === article.value.id ? article.value : article);
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 watch(() => articleStore.articles, (newVal, oldVal) => {
@@ -48,6 +72,7 @@ div.edit-article {
     display: flex;
     flex-direction: column;
     padding: 3rem;
+    height: fit-content;
 
     form {
         display: flex;
@@ -65,6 +90,17 @@ div.edit-article {
                 border-color: $accent-color;
                 outline: none;
             }
+        }
+
+        button {
+            background-color: $accent-color;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            width: fit-content;
+            align-self: flex-end;
         }
     }
 }

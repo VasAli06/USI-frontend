@@ -40,7 +40,6 @@ async function login() {
     try {
         const response = await axios.post('/verify', { password: password.value });
         globalStore.userId = response.data.id;
-        axios.defaults.headers.common['x-user-id'] = `${globalStore.userId}`;
         console.log(globalStore.userId);
         router.push('/admin');
     } catch (error) {

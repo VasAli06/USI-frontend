@@ -9,9 +9,17 @@ const props = defineProps(['title']);
 console.log(articleStore.articles);
 
 const article = ref(null)
+let articleNotFound = false;
 
 watch(() => articleStore.articles, (newVal, oldVal) => {
   article.value = articleStore.articles.find(article => article.title === props.title);
+  articleNotFound = false;
+  if (!article.value) {
+    articleNotFound = true;
+    setTimeout(() => {
+      if (articleNotFound) router.push('/clanky');
+    }, 3000);
+  }
 }, {
   immediate: true
 });
