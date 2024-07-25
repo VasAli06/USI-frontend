@@ -42,6 +42,37 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import('../views/LoginView.vue')
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('../views/AdminView.vue'),
+    children: [
+      {
+        path: '/admin',
+        redirect: 'admin/articles' // Redirect to /admin/articles when /admin is accessed
+      },
+      {
+        path: 'articles',
+        name: 'admin-articles',
+        component: () => import('../views/admin/ArticlesView.vue')
+      },
+      {
+        path: 'article/:title',
+        name: 'admin-article',
+        component: () => import('../views/admin/EditArticleView.vue')
+      },
+      {
+        path: 'schools',
+        name: 'admin-schools',
+        component: () => import('../views/admin/SchoolsView.vue')
+      },
+      {
+        path: 'school/:name',
+        name: 'admin-school',
+        component: () => import('../views/admin/EditSchoolView.vue')
+      }
+    ]
   }
 ]
 

@@ -6,7 +6,15 @@ const route = useRoute()
 
 const isVisible = computed(() => {
   // Adjust your logic based on route names
-  if (route.name === 'joinus' || route.name === 'home') {
+  if (route.name === 'joinus' || route.name === 'home' || (route.name && route.name.startsWith('admin'))) {
+    return false
+  } else {
+    return true
+  }
+})
+
+const footerIsVisible = computed(() => {
+  if (route.name && route.name.startsWith('admin')) {
     return false
   } else {
     return true
@@ -36,7 +44,7 @@ const isVisible = computed(() => {
   <RouterView />
 
 
-  <footer>
+  <footer v-if="footerIsVisible">
 
     <article class="footer-container">
       <article class="menu-container">

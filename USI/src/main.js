@@ -2,7 +2,8 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import './assets/reset.css'
 import './assets/fonts.css'
-import './assets/texts.css'
+import './assets/main.scss'
+import './assets/form.scss'
 import App from './App.vue'
 import router from './router'
 
@@ -23,7 +24,7 @@ axios.interceptors.response.use(
     },
     error => {
         // Check for a 401 status and specific message
-        if (error.response && error.response.status === 400 && error.response.data === "User not found") {
+        if (error.response && error.response.status === 403 && error.response.data.message === "Not authorized") {
             // Redirect to /signin
             window.location.href = '/login';
         }

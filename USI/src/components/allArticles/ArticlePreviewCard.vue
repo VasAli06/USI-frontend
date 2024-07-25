@@ -1,7 +1,16 @@
 <script setup>
 import { marked } from 'marked';
 
-const props = defineProps(['data'])
+const props = defineProps({
+    data: {
+        type: Object,
+        required: true
+    },
+    inAdminPanel: {
+        type: Boolean,
+        default: false
+    }
+})
 
 function getFirstTextFromMarkdown(markdownContent) {
     const tokens = marked.lexer(markdownContent);
@@ -32,9 +41,11 @@ function getFirstTextFromMarkdown(markdownContent) {
             v-html="marked(getFirstTextFromMarkdown(props.data.content)).replace('\<p\>', '').replace('\</p\>', '').trimEnd() + `.....`">
         </p>
 
-        <router-link :to="{ name: 'article', params: { title: props.data.title } }">
+        <router-link v-if="!props.inAdminPanel" :to="{ name: 'article', params: { title: props.data.title } }">
             Přečíst
         </router-link>
+        <router-link v-else :to="{ name: 'admin-article', params: { title: props.data.title } }">Upravit
+            článek</router-link>
     </article>
 
 
