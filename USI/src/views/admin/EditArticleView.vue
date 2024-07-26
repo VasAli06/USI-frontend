@@ -12,6 +12,10 @@
                 <p>Datum publikace:</p>
                 <input type="date" v-model="date" />
             </div>
+            <button @click="deleteArticle" class="delete">
+                Smazat článek
+                <i class="fa-solid fa-trash-can"></i>
+            </button>
             <button type="submit" @click="editArticle">
                 <LoadingSpinner class="" v-if="loading" />
                 <span>Upravit článek</span>
@@ -123,6 +127,10 @@ watch(() => articleStore.articles, (newVal, oldVal) => {
     }
 
     const foundArticle = articleStore.articles.find(article => article.title === title);
+    if (articleStore.articles && !foundArticle) {
+        router.push({ name: 'admin-articles' });
+        return;
+    }
     article.value = foundArticle ? cloneDeep(foundArticle) : null;
     if (article.value) date.value = article.value.createdAt.split('T')[0];
     console.log(date.value);
@@ -132,7 +140,8 @@ watch(() => articleStore.articles, (newVal, oldVal) => {
 
 onBeforeRouteLeave((to, from, next) => {
     const unsavedChanges = () => {
-        return article.value.title !== articleStore.articles.find(foundArticle => foundArticle.id === article.value.id).title || article.value.content !== articleStore.articles.find(foundArticle => foundArticle.id === article.value.id).content;
+        if (articleStore.articles.find(foundArticle => foundArticle.id === article.value.id) == undefined) return false;
+        return article.value.title !== articleStore.articles.find(foundArticle => foundArticle.id === article.value.id).title || article.value.content !== articleStore.articles.find(foundArticle => foundArticle.id === article.value.id).content || date.value !== articleStore.articles.find(foundArticle => foundArticle.id === article.value.id).createdAt.split('T')[0];
     }
     if (unsavedChanges()) {
         const answer = window.confirm('Máte neuložené změny, opravdu chcete tuto stránku opustit?');
@@ -145,6 +154,15 @@ onBeforeRouteLeave((to, from, next) => {
         next();
     }
 });
+
+async function deleteArticle() {
+    const answer = window.confirm('Opravdu chcete smazat článek?');
+    if (answer) {
+        await axios.delete(`/article/${article.value.id}`);
+        articleStore.articles = articleStore.articles.filter(filteredArticle => filteredArticle.id !== article.value.id);
+        router.push({ name: 'admin-articles' });
+    }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -211,6 +229,17 @@ div.edit-article {
             display: flex;
             align-items: center;
             gap: 1rem;
+
+            &.delete {
+                background-color: rgba(128, 128, 128, 0.544);
+                padding: 1rem 1.3rem;
+                align-self: flex-start;
+                transition: background-color 0.3s;
+
+                &:hover {
+                    background-color: $red;
+                }
+            }
         }
     }
 }
