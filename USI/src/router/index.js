@@ -68,7 +68,7 @@ const routes = [
         component: () => import('../views/admin/SchoolsView.vue')
       },
       {
-        path: 'school/:name',
+        path: 'school/:id',
         name: 'admin-school',
         component: () => import('../views/admin/EditSchoolView.vue')
       }

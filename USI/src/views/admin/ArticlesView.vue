@@ -1,7 +1,8 @@
 <template>
     <div class="all-articles">
         <button @click="addArticle">+</button>
-        <ArticlePreviewCard v-for="article in articles" :key="article.id" :data="article" :inAdminPanel="true" />
+        <ArticlePreviewCard v-for="article in articlesStore.articles" :key="article.id" :data="article"
+            :inAdminPanel="true" />
     </div>
 </template>
 
@@ -13,14 +14,6 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const articlesStore = useArticlesStore();
-const articles = ref(articlesStore.articles);
-
-watch(() => articlesStore.articles, () => {
-    articles.value = articlesStore.articles;
-    console.log(articles.value);
-},
-    { immediate: true }
-);
 
 function addArticle() {
     router.push("/admin/article/new");

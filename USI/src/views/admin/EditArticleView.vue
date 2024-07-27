@@ -65,7 +65,6 @@ const errors = ref({
 
 async function handleUpload(file) {
     uploading.value = true;
-    console.log(file);
     const reader = new FileReader();
 
     return new Promise((resolve, reject) => {
@@ -200,19 +199,6 @@ div.edit-article {
             input {
                 font-size: 1.2rem;
                 color: $accent-color;
-            }
-        }
-
-        input.title {
-            font-size: 4rem;
-            width: 100%;
-            border: 3px dashed rgba(128, 128, 128, 0.259);
-            border-radius: 5px;
-            padding: 0rem 1rem;
-
-            &:focus {
-                border-color: $accent-color;
-                outline: none;
             }
         }
 
