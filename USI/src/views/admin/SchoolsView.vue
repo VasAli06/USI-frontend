@@ -6,6 +6,7 @@
                 @click="router.push(`/admin/school/${school.id}`)">{{
                 school.name
             }}</button>
+            <button class="add-new-school" @click="router.push(`/admin/school/new`)">Přidat novou školu</button>
         </article>
     </div>
 </template>
@@ -57,6 +58,11 @@ const router = useRouter();
             &.selected {
                 background: $primary-color;
                 color: #ffffff;
+            }
+
+            &.add-new-school {
+                background-color: #d7d7d7a2;
+                color: $accent-color;
             }
         }
     }

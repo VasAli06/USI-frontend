@@ -14,6 +14,8 @@ app.use(router)
 
 import axios from "axios"
 import { useGlobalStore } from './stores/global'
+import { useArticlesStore } from './stores/articles'
+import { useSchoolsStore } from './stores/schools'
 
 axios.defaults.baseURL = useGlobalStore().apiUrl;
 axios.defaults.headers.common['x-user-id'] = `${useGlobalStore().userId}`;
@@ -33,5 +35,8 @@ axios.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+useArticlesStore()
+useSchoolsStore()
 
 app.mount('#app')

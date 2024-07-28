@@ -52,6 +52,4 @@ async function login() {
 
 </script>
 
-<style lang="scss" scoped>
-.login-view {}
-</style>
+<style lang="scss" scoped></style>

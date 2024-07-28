@@ -17,15 +17,18 @@ watch(() => schoolsData.schools, () => {
         map.removeLayer(layer);
       }
     });
+    logoLinks.value = []
 
     schoolsData.schools.forEach(school => {
       L.marker([school.xCord, school.yCord]).addTo(map);
+      logoLinks.value.push(school.logoLink)
     });
   }
 }, { immediate: true });
 
 const selectedSchool = ref(null)
 const searchPhrase = ref('')
+const logoLinks = ref([])
 
 onMounted(() => {
   var options = {
@@ -108,8 +111,8 @@ onMounted(() => {
 
   <main>
     <article class="schoolslogos-in-USI-container">
-      <ScrollingLogos reverse="false"> </ScrollingLogos>
-      <ScrollingLogos reverse="true"></ScrollingLogos>
+      <ScrollingLogos :reverse="false" :logoLinks="logoLinks"> </ScrollingLogos>
+      <ScrollingLogos :reverse="true" :logoLinks="logoLinks"></ScrollingLogos>
     </article>
 
     <article class="schools-list-container">
@@ -124,8 +127,8 @@ onMounted(() => {
           v-for="school in schoolsData.schools.filter(school => school.name.toLowerCase().includes(searchPhrase.toLowerCase()))"
           :key="school.id" @click="selectedSchool === school ? selectedSchool = null : selectedSchool = school"
           :class="{ 'selected': selectedSchool === school }">{{
-          school.name
-        }}</button>
+        school.name
+      }}</button>
       </article>
 
       <SchoolsDetailBox :data=selectedSchool></SchoolsDetailBox>

@@ -42,6 +42,9 @@
                     <label for="logo">Logo</label>
                     <input id="logo" type="file" @change="handleUpload" placeholder="Logo"
                         accept="image/png, image/jpeg, image/jpg, image/webp, image/svg+xml" />
+                    <p v-if="uploading">
+                        <LoadingSpinner /> Logo se nahrává
+                    </p>
                 </div>
                 <div class="selected-logo">
                     <p>Vybrané logo:</p>
@@ -90,7 +93,12 @@ async function updateCoordinates() {
     coordinatesAreUpdating = true;
     console.log(school.value.address);
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(school.value.address)}`;
-    const response = await axios.get(url);
+    try {
+        const response = await axios.get(url);
+    } catch (error) {
+        console.error('Při najímání souřadnic nastala chyba, zkuste znovu zadat adresu školy.');
+        return;
+    }
     console.log(response.data);
     if (response.data.length > 0) {
         school.value.xCord = Number(response.data[0].lat);
@@ -180,6 +188,8 @@ onBeforeRouteLeave((to, from, next) => {
     const unsavedChanges = () => {
         school.value.xCord = Number(school.value.xCord);
         school.value.yCord = Number(school.value.yCord);
+
+        if (id === 'new') return true;
 
         const originalSchool = schoolsStore.schools.find(foundSchool => foundSchool.id === school.value.id);
         if (!originalSchool) return false;
@@ -290,6 +300,16 @@ async function deleteSchool() {
         .logo-wrapper {
             display: flex;
             gap: 1rem;
+
+            .input-wrapper {
+                p {
+                    margin-top: 1rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                    color: $accent-color;
+                }
+            }
 
             .selected-logo {
                 display: flex;

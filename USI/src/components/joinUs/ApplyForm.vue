@@ -1,6 +1,6 @@
 <template>
   <article class="form-container">
-    <form action="">
+    <form @submit.prevent>
 
       <section>
         <h2>Žádost o připojení do UŠI:</h2>
@@ -9,35 +9,56 @@
 
       <div>
         <label for="school-name">Název Vaší školy:</label>
-        <input type="text" id="school-name">
+        <input type="text" id="school-name" v-model="formData.schoolName" placeholder="Název Vaší školy"
+          @input="formErrors.schoolName = false">
+        <p v-if="formErrors.schoolName" class="error"><i class="fa-solid fa-circle-xmark"></i> Název školy je povinn
+        </p>
       </div>
 
       <div>
         <label for="students-contact">Kontakt na tři aktivní studenty:</label>
         <div class="row-flex">
-          <p>1.</p> <input type="text" id="students-contact">
-        </div>
-
-        <div class="row-flex">
-          <p>2.</p> <input type="text" id="students-contact">
+          <p>1.</p> <input type="text" id="students-contact" v-model="formData.studentsContact[0]"
+            placeholder="aktivnistudent1@vaseskola.cz" @input="formErrors.studentsContact = false">
         </div>
         <div class="row-flex">
-          <p>3.</p> <input type="text" id="students-contact">
+          <p>2.</p> <input type="text" v-model="formData.studentsContact[1]" placeholder="aktivnistudent2@vaseskola.cz"
+            @input="formErrors.studentsContact = false">
         </div>
+        <div class="row-flex">
+          <p>3.</p> <input type="text" v-model="formData.studentsContact[2]" placeholder="aktivnistudent3@vaseskola.cz"
+            @input="formErrors.studentsContact = false">
+        </div>
+        <p v-if="formErrors.studentsContact" class="error"><i class="fa-solid fa-circle-xmark"></i> Jeden nebo více
+          e-mailů jsou neplatné</p>
       </div>
 
       <div>
-
         <label for="school-name">Stručně popište svou školu:</label>
-        <textarea name="" id="" cols="30" rows="10"></textarea>
+        <textarea name="" id="" cols="30" rows="10" v-model="formData.schoolDescription"
+          placeholder="Druhá nejlepší škola v čechách (po SSPŠ samozřejmě)"
+          @input="formErrors.schoolDescription = false"></textarea>
+        <p v-if="formErrors.schoolDescription" class="error"><i class="fa-solid fa-circle-xmark"></i> Popiš školy nemůže
+          být prázdný</p>
       </div>
 
       <div>
         <label for="school-name">Zdůvodněte proč se chcete připojit k UŠI:</label>
-        <textarea name="" id="" cols="30" rows="10"></textarea>
-
+        <textarea name="" id="" cols="30" rows="10" v-model="formData.reason"
+          placeholder="Chceme jít cestou SSPŠ, protože to je nejlepší škola"
+          @input="formErrors.reason = false"></textarea>
+        <p v-if="formErrors.reason" class="error"><i class="fa-solid fa-circle-xmark"></i> Důvod nemůže bt prázdn</p>
       </div>
-      <input type="submit">
+
+      <div>
+        <label for="mail">E-mail, na který Vás kontaktujeme s rozhodnutím:</label>
+        <input type="text" id="mail" v-model="formData.mail" placeholder="reditel@vaseskola.cz"
+          @input="formErrors.mail = false">
+        <p v-if="formErrors.mail" class="error"><i class="fa-solid fa-circle-xmark"></i> Poskytnut e-mail je neplatn
+        </p>
+      </div>
+
+      <input type="submit" @click="submitForm">
     </form>
 
   </article>
@@ -45,6 +66,56 @@
 
 
 </template>
+
+<script setup>
+import { ref } from 'vue'
+import axios from 'axios'
+import Joi from 'joi'
+
+const verifyJoinUsSchema = Joi.object({
+  schoolName: Joi.string().required(),
+  studentsContact: Joi.array().items(Joi.string().email({ tlds: { allow: false } })).length(3).required(),
+  schoolDescription: Joi.string().required(),
+  reason: Joi.string().required(),
+  mail: Joi.string().email({ tlds: { allow: false } }).required(),
+}).unknown(true)
+
+const formData = ref({
+  schoolName: '',
+  mail: '',
+  studentsContact: [
+    '',
+    '',
+    ''
+  ],
+  schoolDescription: '',
+  reason: ''
+})
+
+const formErrors = ref({
+  schoolName: false,
+  mail: false,
+  studentsContact: false,
+  schoolDescription: false,
+  reason: false
+})
+
+async function submitForm() {
+  const { error } = verifyJoinUsSchema.validate(formData.value)
+  if (error) {
+    console.log(error.details[0].path[0])
+    if (error.details[0].path[0] === 'schoolName') formErrors.value.schoolName = true;
+    if (error.details[0].path[0] === 'studentsContact') formErrors.value.studentsContact = true;
+    if (error.details[0].path[0] === 'schoolDescription') formErrors.value.schoolDescription = true;
+    if (error.details[0].path[0] === 'reason') formErrors.value.reason = true;
+    if (error.details[0].path[0] === 'mail') formErrors.value.mail = true;
+    return
+  }
+  const response = await axios.post('/joinus', { formData: formData.value })
+  console.log(response)
+}
+</script>
+
 <style lang="scss" scoped>
 @use "@/assets/variables.scss" as var;
 </style>

@@ -11,8 +11,15 @@ export const useGlobalStore = defineStore('global', () => {
         localStorage.setItem('userId', newValue);
     });
 
+    function logout() {
+        userId.value = null;
+        localStorage.removeItem('userId');
+        window.location.href = '/login';
+    }
+
     return {
         apiUrl,
-        userId
+        userId,
+        logout
     }
 })
