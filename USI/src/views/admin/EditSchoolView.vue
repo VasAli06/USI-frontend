@@ -95,14 +95,13 @@ async function updateCoordinates() {
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(school.value.address)}`;
     try {
         const response = await axios.get(url);
+        if (response.data.length > 0) {
+            school.value.xCord = Number(response.data[0].lat);
+            school.value.yCord = Number(response.data[0].lon);
+        }
     } catch (error) {
         console.error('Při najímání souřadnic nastala chyba, zkuste znovu zadat adresu školy.');
         return;
-    }
-    //console.log(response.data);
-    if (response.data.length > 0) {
-        school.value.xCord = Number(response.data[0].lat);
-        school.value.yCord = Number(response.data[0].lon);
     }
     coordinatesAreUpdating = false;
 }

@@ -57,6 +57,10 @@ const router = useRouter();
 // window.addEventListener('mousedown', () => {
 //     mouseDown = true;
 // });
+
+if (globalStore.userId === null) {
+    router.push('/login');
+}
 </script>
 
 <style lang="scss" scoped>
