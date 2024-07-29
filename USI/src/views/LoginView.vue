@@ -40,11 +40,13 @@ async function login() {
     try {
         const response = await axios.post('/verify', { password: password.value });
         globalStore.userId = response.data.id;
-        console.log(globalStore.userId);
+        //console.log(globalStore.userId);
         router.push('/admin');
     } catch (error) {
         if (error.response.data.message === "Wrong password") {
             wrongPassword.value = true;
+        } else {
+            console.error(error);
         }
     }
     isLoading.value = false;

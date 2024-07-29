@@ -8,7 +8,6 @@ export const useArticlesStore = defineStore('articles', () => {
   async function getArticles() {
     const response = await axios.get("/article");
     articles.value = response.data;
-    console.log(articles.value);
   }
   getArticles();
 

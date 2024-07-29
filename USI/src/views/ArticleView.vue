@@ -6,7 +6,7 @@ import { marked } from 'marked';
 const articleStore = useArticlesStore();
 
 const props = defineProps(['title']);
-console.log(articleStore.articles);
+//console.log(articleStore.articles);
 
 const article = ref(null)
 let articleNotFound = false;

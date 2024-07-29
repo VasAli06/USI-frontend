@@ -91,7 +91,7 @@ let coordinatesAreUpdating = false;
 async function updateCoordinates() {
     if (coordinatesAreUpdating) return;
     coordinatesAreUpdating = true;
-    console.log(school.value.address);
+    //console.log(school.value.address);
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(school.value.address)}`;
     try {
         const response = await axios.get(url);
@@ -99,7 +99,7 @@ async function updateCoordinates() {
         console.error('Při najímání souřadnic nastala chyba, zkuste znovu zadat adresu školy.');
         return;
     }
-    console.log(response.data);
+    //console.log(response.data);
     if (response.data.length > 0) {
         school.value.xCord = Number(response.data[0].lat);
         school.value.yCord = Number(response.data[0].lon);
@@ -117,7 +117,6 @@ async function handleUpload(event) {
     return new Promise((resolve, reject) => {
         reader.onload = async function (event) {
             const rawImageData = event.target.result;
-            console.log(rawImageData);
 
             try {
                 const response = await axios.post('/image', { image: rawImageData });
@@ -153,7 +152,6 @@ async function editSchool() {
         }
     } catch (error) {
         console.error(error);
-        //if (error.response.data.message === 'Article with this title already exists') errors.value.titleExists = true;
     }
     loading.value = false;
 }
@@ -213,11 +211,17 @@ onBeforeRouteLeave((to, from, next) => {
 async function deleteSchool() {
     const answer = window.confirm('Opravdu chcete smazat tuto školu?');
     if (answer) {
-        await axios.delete(`/school/${school.value.id}`);
-        schoolsStore.schools = schoolsStore.schools.filter(filteredSchool => filteredSchool.id !== school.value.id);
-        router.push({ name: 'admin-schools' });
+        try {
+            await axios.delete(`/school/${school.value.id}`);
+            schoolsStore.schools = schoolsStore.schools.filter(filteredSchool => filteredSchool.id !== school.value.id);
+            router.push({ name: 'admin-schools' });
+        } catch (error) {
+            console.error(error);
+            alert('Při mazání školy nastala chyba, zkuste to znovu.');
+        }
     }
 }
+
 </script>
 
 <style lang="scss" scoped>

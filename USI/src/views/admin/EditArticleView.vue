@@ -70,7 +70,6 @@ async function handleUpload(file) {
     return new Promise((resolve, reject) => {
         reader.onload = async function (event) {
             const rawImageData = event.target.result;
-            console.log(rawImageData);
 
             try {
                 const response = await axios.post('/image', { image: rawImageData });
@@ -97,7 +96,6 @@ async function editArticle() {
     try {
         loading.value = true;
         article.value.createdAt = `${date.value}T${article.value.createdAt.split('T')[1]}`;
-        console.log(title);
         if (title === 'new') {
             const response = await axios.post('/article', { article: article.value });
             articleStore.articles.push(response.data.article);
@@ -132,7 +130,6 @@ watch(() => articleStore.articles, (newVal, oldVal) => {
     }
     article.value = foundArticle ? cloneDeep(foundArticle) : null;
     if (article.value) date.value = article.value.createdAt.split('T')[0];
-    console.log(date.value);
 }, {
     immediate: true
 });
@@ -157,9 +154,14 @@ onBeforeRouteLeave((to, from, next) => {
 async function deleteArticle() {
     const answer = window.confirm('Opravdu chcete smazat článek?');
     if (answer) {
-        await axios.delete(`/article/${article.value.id}`);
-        articleStore.articles = articleStore.articles.filter(filteredArticle => filteredArticle.id !== article.value.id);
-        router.push({ name: 'admin-articles' });
+        try {
+            await axios.delete(`/article/${article.value.id}`);
+            articleStore.articles = articleStore.articles.filter(filteredArticle => filteredArticle.id !== article.value.id);
+            router.push({ name: 'admin-articles' });
+        } catch (error) {
+            console.error(error);
+            alert('Při mazání článku nastala chyba, zkuste to znovu.');
+        }
     }
 }
 </script>

@@ -8,7 +8,6 @@ export const useSchoolsStore = defineStore('schools', () => {
     async function getSchools() {
         const response = await axios.get("/school");
         schools.value = response.data;
-        console.log(schools.value);
     }
     getSchools();
 

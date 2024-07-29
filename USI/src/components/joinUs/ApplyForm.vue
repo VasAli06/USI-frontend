@@ -11,7 +11,7 @@
         <label for="school-name">Název Vaší školy:</label>
         <input type="text" id="school-name" v-model="formData.schoolName" placeholder="Název Vaší školy"
           @input="formErrors.schoolName = false">
-        <p v-if="formErrors.schoolName" class="error"><i class="fa-solid fa-circle-xmark"></i> Název školy je povinn
+        <p v-if="formErrors.schoolName" class="error"><i class="fa-solid fa-circle-xmark"></i> Název školy je povinný
         </p>
       </div>
 
@@ -58,7 +58,10 @@
         </p>
       </div>
 
-      <input type="submit" @click="submitForm">
+      <button type="submit" @click="submitForm">Odeslat žádost
+        <LoadingSpinner v-if="loading" />
+      </button>
+      <p v-if="success" class="confirmation">Vaše žádost byla odeslána.</p>
     </form>
 
   </article>
@@ -71,6 +74,7 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import Joi from 'joi'
+import LoadingSpinner from '@/components/loadingSpinner.vue'
 
 const verifyJoinUsSchema = Joi.object({
   schoolName: Joi.string().required(),
@@ -99,11 +103,13 @@ const formErrors = ref({
   schoolDescription: false,
   reason: false
 })
+const loading = ref(false)
+const success = ref(false)
 
 async function submitForm() {
   const { error } = verifyJoinUsSchema.validate(formData.value)
   if (error) {
-    console.log(error.details[0].path[0])
+    //console.log(error.details[0].path[0])
     if (error.details[0].path[0] === 'schoolName') formErrors.value.schoolName = true;
     if (error.details[0].path[0] === 'studentsContact') formErrors.value.studentsContact = true;
     if (error.details[0].path[0] === 'schoolDescription') formErrors.value.schoolDescription = true;
@@ -111,11 +117,23 @@ async function submitForm() {
     if (error.details[0].path[0] === 'mail') formErrors.value.mail = true;
     return
   }
-  const response = await axios.post('/joinus', { formData: formData.value })
-  console.log(response)
+  try {
+    loading.value = true
+    const response = await axios.post('/joinus', { formData: formData.value })
+    success.value = true
+  } catch (error) {
+    console.error(error);
+    alert('Vaše žádost NEBYLA odeslána. Při odesílání nastala chyba. Při přetrvávajících problémech nás prosím kontaktujte.');
+  }
+  loading.value = false
 }
 </script>
 
 <style lang="scss" scoped>
-@use "@/assets/variables.scss" as var;
+@use "@/assets/variables.scss" as *;
+
+.confirmation {
+  font-size: 1.5rem;
+  color: $accent-color;
+}
 </style>

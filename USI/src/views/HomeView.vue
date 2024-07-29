@@ -4,11 +4,14 @@ import ScrollingLogos from '@/components/home/ScrollingLogos.vue';
 import AboutUSI from '@/components/home/AboutUSI.vue';
 import Hero from '@/components/home/Hero.vue';
 import { ref, watch } from 'vue';
-
 import { useArticlesStore } from '@/stores/articles';
+import { useSchoolsStore } from '@/stores/schools';
+
 const articleStore = useArticlesStore();
+const schoolsStore = useSchoolsStore();
 
 const twoLatestArticles = ref(null)
+const logoLinks = ref([])
 
 function getTwoLatestArticles() {
   twoLatestArticles.value = articleStore.articles
@@ -22,6 +25,12 @@ function getTwoLatestArticles() {
 
 watch(() => articleStore.articles, () => {
   getTwoLatestArticles();
+}, {
+  immediate: true
+})
+
+watch(() => schoolsStore.schools, () => {
+  logoLinks.value = schoolsStore.schools.map(school => school.logoLink)
 }, {
   immediate: true
 })
@@ -44,7 +53,7 @@ watch(() => articleStore.articles, () => {
   </main>
   <article class="schools-in-USI-container">
     <h2>Zapojené školy do UŠI</h2>
-    <ScrollingLogos></ScrollingLogos>
+    <ScrollingLogos :logoLinks></ScrollingLogos>
   </article>
 </template>
 

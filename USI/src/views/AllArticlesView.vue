@@ -43,7 +43,6 @@ const shownArticles = ref([]);
 
 watch(() => [currentPage.value, articleStore.articles], () => {
   shownArticles.value = formatShowArticles();
-  console.log("HEHEE");
 }, {
   immediate: true
 });

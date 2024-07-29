@@ -1,10 +1,12 @@
 <template>
     <section class="admin-view">
-        <aside>
+        <aside ref="aside">
             <button @click="router.push('/admin/articles')"
                 :class="{ selected: router.currentRoute.value.path === '/admin/articles' }">Články</button>
             <button @click="router.push('/admin/schools')"
                 :class="{ selected: router.currentRoute.value.path === '/admin/schools' }">Školy</button>
+            <button @click="router.push('/admin/images')"
+                :class="{ selected: router.currentRoute.value.path === '/admin/images' }">Obrázky</button>
             <button @click="globalStore.logout"><i class="fa-solid fa-right-from-bracket"></i>Odhlásit se</button>
         </aside>
         <main>
@@ -16,9 +18,45 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { useGlobalStore } from "@/stores/global";
+import { ref, onMounted } from "vue";
 
 const globalStore = useGlobalStore();
 const router = useRouter();
+// const aside = ref(null);
+// let grabbableLineXcoord = 0;
+// let mouseDown = false;
+
+// function getGrabbableLineXcoord() {
+//     return aside.value.getBoundingClientRect().right;
+// }
+
+// onMounted(() => {
+//     grabbableLineXcoord = getGrabbableLineXcoord();
+
+//     window.addEventListener('mousemove', (e) => {
+//         if (e.clientX > grabbableLineXcoord - 30 && e.clientX < grabbableLineXcoord + 30) {
+//             document.body.style.cursor = 'col-resize';
+//             if (mouseDown) {
+//                 aside.value.style.width = e.clientX + 'px';
+//                 grabbableLineXcoord = Number(aside.value.style.width.replace('px', ''));
+//             }
+//         } else {
+//             document.body.style.cursor = 'default';
+//         }
+//     });
+// });
+
+// window.addEventListener('resize', () => {
+//     grabbableLineXcoord = getGrabbableLineXcoord();
+// });
+
+// window.addEventListener('mouseup', () => {
+//     mouseDown = false;
+// });
+
+// window.addEventListener('mousedown', () => {
+//     mouseDown = true;
+// });
 </script>
 
 <style lang="scss" scoped>
@@ -27,8 +65,7 @@ const router = useRouter();
 .admin-view {
     width: 100%;
     height: 100vh;
-    display: grid;
-    grid-template-columns: 20rem 1fr;
+    display: flex;
 
     aside {
         background-color: #f0f0f0;
@@ -37,6 +74,7 @@ const router = useRouter();
         padding: 1rem;
         padding-top: 2rem;
         overflow-y: auto;
+        width: 20rem;
 
         button {
             color: $accent-color;

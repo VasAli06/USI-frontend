@@ -71,6 +71,11 @@ const routes = [
         path: 'school/:id',
         name: 'admin-school',
         component: () => import('../views/admin/EditSchoolView.vue')
+      },
+      {
+        path: 'images',
+        name: 'admin-images',
+        component: () => import('../views/admin/ImagesView.vue')
       }
     ]
   }
