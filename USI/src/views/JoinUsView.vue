@@ -18,7 +18,4 @@ import Hero from '@/components/joinUs/hero.vue'
 </template>
 <style lang="scss" scoped>
 @use "@/assets/variables.scss" as var;
-
-
-
 </style>

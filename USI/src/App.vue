@@ -6,7 +6,15 @@ const route = useRoute()
 
 const isVisible = computed(() => {
   // Adjust your logic based on route names
-  if (route.name === 'joinus' || route.name === 'home') {
+  if (route.name === 'joinus' || route.name === 'home' || (route.name && route.name.startsWith('admin'))) {
+    return false
+  } else {
+    return true
+  }
+})
+
+const footerIsVisible = computed(() => {
+  if (route.name && route.name.startsWith('admin')) {
     return false
   } else {
     return true
@@ -36,26 +44,17 @@ const isVisible = computed(() => {
   <RouterView />
 
 
-  <footer>
+  <footer v-if="footerIsVisible">
 
     <article class="footer-container">
       <article class="menu-container">
         <p class="heading">Menu</p>
-        <a href="">
-          <RouterLink to="/">Domů</RouterLink>
-        </a>
-        <a href="">
-          <RouterLink to="/o-nas">O nás</RouterLink>
-        </a>
-        <a href="">
-          <RouterLink to="/skoly">Školy v UŠI</RouterLink>
-        </a>
-        <a href="">
-          <RouterLink to="/chci-byt-soucasti">Chci být součástí</RouterLink>
-        </a>
-        <a href="">
-          <RouterLink to="/clanky">Příspěvky</RouterLink>
-        </a>
+        <RouterLink to="/">Domů</RouterLink>
+        <RouterLink to="/o-nas">O nás</RouterLink>
+        <RouterLink to="/skoly">Školy v UŠI</RouterLink>
+        <RouterLink to="/chci-byt-soucasti">Chci být součástí</RouterLink>
+        <RouterLink to="/clanky">Příspěvky</RouterLink>
+        <RouterLink to="/login">Administrace</RouterLink>
 
       </article>
       <article class="contactinfo-container">

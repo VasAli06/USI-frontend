@@ -1,39 +1,42 @@
 <script setup>
 import ScrollingLogos from '@/components/home/ScrollingLogos.vue';
-import SchoolsDetialBox from '@/components/schools/SchoolsDetialBox.vue';
-
+import SchoolsDetailBox from '@/components/schools/SchoolsDetailBox.vue';
 import { useSchoolsStore } from '@/stores/schools';
-const schoolsData = useSchoolsStore();
-
 import SchoolListItem from '@/components/schools/SchoolListItem.vue';
-
 import { czBoundary } from "../assets/geodata.js";
-import { onMounted,ref } from 'vue';
-const data_for_infobox = ref({
-  name: "",
-  address: "",
-  contact_person: "",
-  website: "",
-  about_school: ""
-});
+import { onMounted, ref, watch } from 'vue';
 
-const InfoBoxDataSetter = (school) => {
-  data_for_infobox.value = {
-    name: school.name,
-    address: school.address,
-    contact_person: school.contact_person,
-    website: school.website,
-    about_school: school.about_school
-  };
-};
+const schoolsData = useSchoolsStore();
+let map = null;
+
+watch(() => schoolsData.schools, () => {
+  if (schoolsData.schools && map) {
+    // remove all markers
+    map.eachLayer((layer) => {
+      if (layer instanceof L.Marker) {
+        map.removeLayer(layer);
+      }
+    });
+    logoLinks.value = []
+
+    schoolsData.schools.forEach(school => {
+      L.marker([school.xCord, school.yCord]).addTo(map);
+      logoLinks.value.push(school.logoLink)
+    });
+  }
+}, { immediate: true });
+
+const selectedSchool = ref(null)
+const searchPhrase = ref('')
+const logoLinks = ref([])
+
 onMounted(() => {
   var options = {
     maxZoom: 15,
     minZoom: 8
   };
 
-
-  var map = L.map("map", options);
+  map = L.map("map", options);
 
   var osm = new L.TileLayer.BoundaryCanvas("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     boundary: czBoundary,
@@ -48,33 +51,40 @@ onMounted(() => {
     iconAnchor: [25, 25], // point of the icon which will correspond to marker's location
     popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
   });
-  function getCoordinates(address) {
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
 
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        if (data.length > 0) {
-          const latitude = data[0].lat;
-          const longitude = data[0].lon;
-          console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-          // Příklad, jak přidat marker na mapu s Leafletem
-          L.marker([latitude, longitude]).addTo(map);
-        } else {
-          console.log('Adresa nenalezena');
-        }
-      })
-      .catch(error => console.error('Chyba při získávání souřadnic:', error));
-  }
+  // remove all markers
+  map.eachLayer((layer) => {
+    if (layer instanceof L.Marker) {
+      map.removeLayer(layer);
+    }
+  });
+
+  schoolsData.schools.forEach(school => {
+    L.marker([school.xCord, school.yCord]).addTo(map);
+  });
+
+  // function getCoordinates(address) {
+  //   const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+
+  //   fetch(url)
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       if (data.length > 0) {
+  //         const latitude = data[0].lat;
+  //         const longitude = data[0].lon;
+  //         console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+  //         // Příklad, jak přidat marker na mapu s Leafletem
+  //         L.marker([latitude, longitude]).addTo(map);
+  //       } else {
+  //         console.log('Adresa nenalezena');
+  //       }
+  //     })
+  //     .catch(error => console.error('Chyba při získávání souřadnic:', error));
+  // }
 
   // Příklad použití
-  getCoordinates("Preslova Praha 5, Česká republika");
-
-  getCoordinates("Gymnazium Jana Keplera, Česká republika");
-
-
-
-
+  // getCoordinates("Preslova Praha 5, Česká republika");
+  // getCoordinates("Gymnazium Jana Keplera, Česká republika");
 
   /*
   var map = L.map("map");
@@ -88,65 +98,48 @@ onMounted(() => {
   
    // map.fitBounds(czBoundary);
   */
-
-
 })
-
-
 </script>
 
 <template>
-
   <main>
     <h1>Školy zapojené v UŠI</h1>
     <h2>Interaktivní mapa škol</h2>
-
   </main>
+
   <div id="map"></div>
+
   <main>
     <article class="schoolslogos-in-USI-container">
-
-      <ScrollingLogos reverse="false"> </ScrollingLogos>
-
-      <ScrollingLogos reverse="true"></ScrollingLogos>
-
-
+      <ScrollingLogos :reverse="false" :logoLinks="logoLinks"> </ScrollingLogos>
+      <ScrollingLogos :reverse="true" :logoLinks="logoLinks"></ScrollingLogos>
     </article>
-
 
     <article class="schools-list-container">
       <h2>Seznam škol</h2>
-      <input type="text" placeholder="Hledat v seznamu">
-      <article class="schools-list-row">
+      <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Hledat v seznamu" v-model="searchPhrase">
+      </div>
 
-        <section>
-          <SchoolListItem v-for="school in schoolsData.schools.slice(0, schoolsData.schools.length / 2) " :data=school
-            @click="InfoBoxDataSetter(school)">
-          </SchoolListItem>
-
-        </section>
-        <section>
-
-          <SchoolListItem
-            v-for="school in schoolsData.schools.slice(schoolsData.schools.length / 2, schoolsData.schools.length) "
-            :data=school @click="InfoBoxDataSetter(school)"></SchoolListItem>
-
-        </section>
-
+      <article class="schools-list">
+        <button
+          v-for="school in schoolsData.schools.filter(school => school.name.toLowerCase().includes(searchPhrase.toLowerCase()))"
+          :key="school.id" @click="selectedSchool === school ? selectedSchool = null : selectedSchool = school"
+          :class="{ 'selected': selectedSchool === school }">{{
+        school.name
+      }}</button>
       </article>
 
-
-      <SchoolsDetialBox :data=data_for_infobox></SchoolsDetialBox>
-
+      <SchoolsDetailBox :data=selectedSchool></SchoolsDetailBox>
     </article>
-
   </main>
 
 
 
 </template>
 <style lang="scss" scoped>
-@use "@/assets/variables.scss" as var;
+@use "@/assets/variables.scss" as *;
 
 .leaflet-container {
   background: #ffffff;
@@ -154,7 +147,7 @@ onMounted(() => {
 }
 
 #map {
-  border: 4px solid var.$primary-color;
+  border: 4px solid $primary-color;
   height: 90vh;
   width: 100%;
 
@@ -183,20 +176,46 @@ h2 {
 .schools-list-container {
   margin-top: 300px;
 
-  .schools-list-row {
+  .search-container {
     display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.7rem;
+    font-size: 1.2rem;
 
-    section {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    input {
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .schools-list {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1rem;
+
+    button {
+      padding: 0.7rem 1rem;
+      border-radius: 17px;
+      background: #d7d7d7;
+      color: $primary-color;
+      transition: 0.3s;
+
+      &:hover {
+        background: #c7c7c7;
+        transform: scale(1.05);
+      }
+
+      &.selected {
+        background: $primary-color;
+        color: #ffffff;
+      }
     }
   }
 }
-
 
 .schoolslogos-in-USI-container {
   flex-direction: column;

@@ -1,127 +1,139 @@
 <template>
- <article class="form-container">
-      <form action="">
+  <article class="form-container">
+    <form @submit.prevent>
 
-        <section>
-          <h2>Žádost o připojení do UŠI:</h2>
-          <p class="basic-text">Pro vyhodnocení vašeho přihlášení prosím vyplňte následující formulář.</p>
-        </section>
+      <section>
+        <h2>Žádost o připojení do UŠI:</h2>
+        <p class="basic-text">Pro vyhodnocení vašeho přihlášení prosím vyplňte následující formulář.</p>
+      </section>
 
-        <div>
-          <label for="school-name">Název Vaší školy:</label>
-          <input type="text" id="school-name">
+      <div>
+        <label for="school-name">Název Vaší školy:</label>
+        <input type="text" id="school-name" v-model="formData.schoolName" placeholder="Název Vaší školy"
+          @input="formErrors.schoolName = false">
+        <p v-if="formErrors.schoolName" class="error"><i class="fa-solid fa-circle-xmark"></i> Název školy je povinný
+        </p>
+      </div>
 
-
+      <div>
+        <label for="students-contact">Kontakt na tři aktivní studenty:</label>
+        <div class="row-flex">
+          <p>1.</p> <input type="text" id="students-contact" v-model="formData.studentsContact[0]"
+            placeholder="aktivnistudent1@vaseskola.cz" @input="formErrors.studentsContact = false">
         </div>
-
-        <div>
-          <label for="students-contact">Kontakt na tři aktivní studenty:</label>
-          <div class="row-flex">
-            <p>1.</p> <input type="text" id="students-contact">
-          </div>
-
-          <div class="row-flex">
-            <p>2.</p> <input type="text" id="students-contact">
-          </div>
-          <div class="row-flex">
-            <p>3.</p> <input type="text" id="students-contact">
-          </div>
+        <div class="row-flex">
+          <p>2.</p> <input type="text" v-model="formData.studentsContact[1]" placeholder="aktivnistudent2@vaseskola.cz"
+            @input="formErrors.studentsContact = false">
         </div>
-
-        <div>
-
-          <label for="school-name">Stručně popište svou školu:</label>
-          <textarea name="" id="" cols="30" rows="10"></textarea>
+        <div class="row-flex">
+          <p>3.</p> <input type="text" v-model="formData.studentsContact[2]" placeholder="aktivnistudent3@vaseskola.cz"
+            @input="formErrors.studentsContact = false">
         </div>
+        <p v-if="formErrors.studentsContact" class="error"><i class="fa-solid fa-circle-xmark"></i> Jeden nebo více
+          e-mailů jsou neplatné</p>
+      </div>
 
-        <div>
-          <label for="school-name">Zdůvodněte proč se chcete připojit k UŠI:</label>
-          <textarea name="" id="" cols="30" rows="10"></textarea>
+      <div>
+        <label for="school-name">Stručně popište svou školu:</label>
+        <textarea name="" id="" cols="30" rows="10" v-model="formData.schoolDescription"
+          placeholder="Druhá nejlepší škola v čechách (po SSPŠ samozřejmě)"
+          @input="formErrors.schoolDescription = false"></textarea>
+        <p v-if="formErrors.schoolDescription" class="error"><i class="fa-solid fa-circle-xmark"></i> Popiš školy nemůže
+          být prázdný</p>
+      </div>
 
-        </div>
-        <input type="submit">
-      </form>
+      <div>
+        <label for="school-name">Zdůvodněte proč se chcete připojit k UŠI:</label>
+        <textarea name="" id="" cols="30" rows="10" v-model="formData.reason"
+          placeholder="Chceme jít cestou SSPŠ, protože to je nejlepší škola"
+          @input="formErrors.reason = false"></textarea>
+        <p v-if="formErrors.reason" class="error"><i class="fa-solid fa-circle-xmark"></i> Důvod nemůže bt prázdn</p>
+      </div>
 
-    </article>
+      <div>
+        <label for="mail">E-mail, na který Vás kontaktujeme s rozhodnutím:</label>
+        <input type="text" id="mail" v-model="formData.mail" placeholder="reditel@vaseskola.cz"
+          @input="formErrors.mail = false">
+        <p v-if="formErrors.mail" class="error"><i class="fa-solid fa-circle-xmark"></i> Poskytnut e-mail je neplatn
+        </p>
+      </div>
+
+      <button type="submit" @click="submitForm">Odeslat žádost
+        <LoadingSpinner v-if="loading" />
+      </button>
+      <p v-if="success" class="confirmation">Vaše žádost byla odeslána.</p>
+    </form>
+
+  </article>
 
 
 
 </template>
-<style lang="scss" scoped>
-@use "@/assets/variables.scss" as var;
-.form-container {
-  background-color: var.$primary-color;
-  color: white;
-  padding: 50px;
-  border-radius: 20px;
-  margin-top: 100px;
 
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+<script setup>
+import { ref } from 'vue'
+import axios from 'axios'
+import Joi from 'joi'
+import LoadingSpinner from '@/components/loadingSpinner.vue'
 
-    section {
-      p {
-        font-weight: 300;
-      }
-    }
+const verifyJoinUsSchema = Joi.object({
+  schoolName: Joi.string().required(),
+  studentsContact: Joi.array().items(Joi.string().email({ tlds: { allow: false } })).length(3).required(),
+  schoolDescription: Joi.string().required(),
+  reason: Joi.string().required(),
+  mail: Joi.string().email({ tlds: { allow: false } }).required(),
+}).unknown(true)
 
-    div {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+const formData = ref({
+  schoolName: '',
+  mail: '',
+  studentsContact: [
+    '',
+    '',
+    ''
+  ],
+  schoolDescription: '',
+  reason: ''
+})
 
-    input {
-      border: none;
-      padding: 10px;
-      padding-top: 13px;
-      padding-bottom:13px;
-      border-radius: 5px;
-      font-size: 16px;
-      width: 65%;
-    }
+const formErrors = ref({
+  schoolName: false,
+  mail: false,
+  studentsContact: false,
+  schoolDescription: false,
+  reason: false
+})
+const loading = ref(false)
+const success = ref(false)
 
-    label {
-      font-size: 25px;
-      font-weight: 400;
-    }
-
-    input[type=submit] {
-      background-color: var.$accent-color;
-      color: white;
-      border: none;
-      width: 25%;
-      font-size: 25px;
-      border-radius: 100px;
-    }
-
-    .row-flex {
-      display: flex;
-      flex-direction: row;
-      position: relative;
-
-      p {
-        position: absolute;
-        left: -25px;
-        font-size: 20px;
-        top: 50%;
-      }
-    }
-    textarea{
-      border: none;
-      padding: 10px;
-      border-radius: 5px;
-      resize: none;
-
-
-      padding: 10px;
-      padding-top: 13px;
-      padding-bottom:13px;
-      font-size: 16px;
-    }
+async function submitForm() {
+  const { error } = verifyJoinUsSchema.validate(formData.value)
+  if (error) {
+    //console.log(error.details[0].path[0])
+    if (error.details[0].path[0] === 'schoolName') formErrors.value.schoolName = true;
+    if (error.details[0].path[0] === 'studentsContact') formErrors.value.studentsContact = true;
+    if (error.details[0].path[0] === 'schoolDescription') formErrors.value.schoolDescription = true;
+    if (error.details[0].path[0] === 'reason') formErrors.value.reason = true;
+    if (error.details[0].path[0] === 'mail') formErrors.value.mail = true;
+    return
   }
+  try {
+    loading.value = true
+    const response = await axios.post('/joinus', { formData: formData.value })
+    success.value = true
+  } catch (error) {
+    console.error(error);
+    alert('Vaše žádost NEBYLA odeslána. Při odesílání nastala chyba. Při přetrvávajících problémech nás prosím kontaktujte.');
+  }
+  loading.value = false
 }
+</script>
 
+<style lang="scss" scoped>
+@use "@/assets/variables.scss" as *;
+
+.confirmation {
+  font-size: 1.5rem;
+  color: $accent-color;
+}
 </style>

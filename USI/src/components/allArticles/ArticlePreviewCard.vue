@@ -1,6 +1,29 @@
 <script setup>
+import { marked } from 'marked';
 
-const props = defineProps(['data'])
+const props = defineProps({
+    data: {
+        type: Object,
+        required: true
+    },
+    inAdminPanel: {
+        type: Boolean,
+        default: false
+    }
+})
+
+function getFirstTextFromMarkdown(markdownContent) {
+    const tokens = marked.lexer(markdownContent);
+    for (const token of tokens) {
+        if (token.type === 'paragraph') {
+            if (token.text.length > 350) {
+                return token.text.substring(0, 350) + "...";
+            }
+            return token.text.trimEnd();
+        }
+    }
+    return '';
+}
 
 </script>
 
@@ -11,14 +34,18 @@ const props = defineProps(['data'])
         <p class="title">{{ props.data.title }}</p>
         <section class="date-container">
             <i class="fa-solid fa-calendar"></i>
-            <p>{{ props.data.date }}</p>
+            <p>{{ (new Date(props.data.createdAt)).toLocaleDateString('cs-CZ') }}</p>
 
         </section>
-        <p class="preview-text basic-text">{{ props.data.text.replaceAll("/r/n", "").substring(0, 350) }}......</p>
+        <p class="preview-text basic-text"
+            v-html="marked(getFirstTextFromMarkdown(props.data.content)).replace('\<p\>', '').replace('\</p\>', '').trimEnd() + `.....`">
+        </p>
 
-        <router-link :to="{ name: 'article', params: { title: props.data.title } }">
+        <router-link v-if="!props.inAdminPanel" :to="{ name: 'article', params: { title: props.data.title } }">
             Přečíst
         </router-link>
+        <router-link v-else :to="{ name: 'admin-article', params: { title: props.data.title } }">Upravit
+            článek</router-link>
     </article>
 
 

@@ -1,10 +1,10 @@
 <template>
     <div class="logo-container">
-        <div class="logo-slider" :class="{ 'animation-reverse': props.reverse === 'true' }">
-            <div v-for="(logo, index) in random_logos_order" :key="index" class="logo-item">
+        <div class="logo-slider" :class="{ 'animation-reverse': props.reverse }">
+            <div v-for="(logo, index) in randomLogosOrder" :key="index" class="logo-item">
                 <img :src="logo" alt="School Logo">
             </div>
-            <div v-for="(logo, index) in random_logos_order" :key="index + logos.length" class="logo-item">
+            <div v-for="(logo, index) in randomLogosOrder" :key="index + props.logoLinks.length" class="logo-item">
                 <img :src="logo" alt="School Logo">
             </div>
         </div>
@@ -12,20 +12,19 @@
 </template>
 
 <script setup>
-const props = defineProps(['reverse'])
+import { computed } from 'vue';
 
-console.log(props.reverse)
+const props = defineProps({
+    reverse: {
+        type: Boolean,
+        default: false
+    },
+    logoLinks: {
+        type: Array,
+        default: () => []
+    }
+})
 
-let logos = [
-    '/loga/1.png',
-    '/loga/2.png',
-    '/loga/3.png',
-    '/loga/4.png',
-    '/loga/5.png',
-    '/loga/6.png',
-    '/loga/7.png',
-    '/loga/8.png',
-]
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -33,7 +32,9 @@ function shuffleArray(array) {
     }
     return array;
 }
-let random_logos_order = shuffleArray(logos)
+const randomLogosOrder = computed(() => {
+    return shuffleArray(props.logoLinks)
+})
 </script>
 
 <style lang="scss" scoped>

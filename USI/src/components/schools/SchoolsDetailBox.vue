@@ -1,18 +1,13 @@
 <script setup>
-
 const props = defineProps(['data'])
-import { useArticlesStore } from '@/stores/articles'
-
-const articleData = useArticlesStore();
 </script>
 
 <template>
-    <article class="school-detail-box" v-if="props.data.name == ''">
-
+    <article class="school-detail-box" v-if="props.data == null">
         <h3>Není vybrána žádná škola.</h3>
-
     </article>
-    <article class="school-detail-box" v-if="props.data.name !== ''">
+
+    <article class="school-detail-box" v-else>
         <h3>{{ props.data.name }}</h3>
         <section>
             <div>
@@ -22,7 +17,7 @@ const articleData = useArticlesStore();
             </div>
             <div>
                 <i class="fa-solid fa-user"></i>
-                <p>{{ props.data.contact_person }}</p>
+                <p>{{ props.data.contactPerson }}</p>
 
             </div>
             <div>
@@ -32,8 +27,7 @@ const articleData = useArticlesStore();
         </section>
         <section>
             <p class="about-school-title">O škole</p>
-            <p v-for="paragraf in articleData.parseText(props.data.about_school)" :key="paragraf" class="basic-text">
-                {{ paragraf }}
+            <p class="basic-text" v-for="paragraf in props.data.description.split('\n')" :key="paragraf">{{ paragraf }}
             </p>
         </section>
     </article>

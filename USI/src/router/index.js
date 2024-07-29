@@ -19,12 +19,12 @@ const routes = [
     props: true
   },
   {
-    path: '/clanky', 
+    path: '/clanky',
     name: 'allArticles',
     component: AllArticlesView
   },
   {
-    path: '/chci-byt-soucasti', 
+    path: '/chci-byt-soucasti',
     name: 'joinus',
     component: JoinUsView
   },
@@ -37,6 +37,47 @@ const routes = [
     path: '/o-nas',
     name: 'about',
     component: AboutView
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/LoginView.vue')
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('../views/AdminView.vue'),
+    children: [
+      {
+        path: '/admin',
+        redirect: 'admin/articles' // Redirect to /admin/articles when /admin is accessed
+      },
+      {
+        path: 'articles',
+        name: 'admin-articles',
+        component: () => import('../views/admin/ArticlesView.vue')
+      },
+      {
+        path: 'article/:title',
+        name: 'admin-article',
+        component: () => import('../views/admin/EditArticleView.vue')
+      },
+      {
+        path: 'schools',
+        name: 'admin-schools',
+        component: () => import('../views/admin/SchoolsView.vue')
+      },
+      {
+        path: 'school/:id',
+        name: 'admin-school',
+        component: () => import('../views/admin/EditSchoolView.vue')
+      },
+      {
+        path: 'images',
+        name: 'admin-images',
+        component: () => import('../views/admin/ImagesView.vue')
+      }
+    ]
   }
 ]
 
