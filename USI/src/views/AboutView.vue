@@ -77,6 +77,10 @@ import JoinUsBanner from '@/components/about/JoinUsBanner.vue'
       flex-direction: column;
       gap: 10px;
     }
+    @media (max-width: 550px) {
+      gap: 20px;
+    }
+
   }
 
 

@@ -74,10 +74,8 @@ watch(() => schoolsStore.schools, () => {
 .schools-in-USI-container {
   flex-direction: column;
   align-items: center;
-  margin-top: 100px;
-
   width: 100%;
-  margin-bottom: 300px;
+  margin-bottom: 100px;
 
   h2 {
     margin-bottom: 60px;

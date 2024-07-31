@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, RouterView, useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const route = useRoute()
 
@@ -20,10 +20,17 @@ const footerIsVisible = computed(() => {
     return true
   }
 })
+
+const isOverlayVisible = ref(false)
+
+const toggleOverlay = () => {
+  isOverlayVisible.value = !isOverlayVisible.value
+  console.log(isOverlayVisible)
+}
 </script>
 
 <template>
-  <header v-if="isVisible">
+  <header v-if="isVisible" class="pc-header">
     <img src="/logo-cerna.png" alt="logo Unie škol inovativních">
     <nav>
       <article>
@@ -36,11 +43,19 @@ const footerIsVisible = computed(() => {
       </article>
 
     </nav>
-
+  </header>
+  <header class="mobile" v-if="isVisible">
+    <img src="/logo-cerna.png" alt="logo Unie škol inovativních">
+    <i class="fa-solid fa-bars" @click="toggleOverlay"></i>
 
   </header>
-
-
+  <nav class="overlay-nav" :class="{ 'active': isOverlayVisible }">
+    <RouterLink to="/" @click="toggleOverlay">Domů</RouterLink>
+    <RouterLink to="/o-nas" @click="toggleOverlay">O nás</RouterLink>
+    <RouterLink to="/skoly" @click="toggleOverlay">Školy v UŠI</RouterLink>
+    <RouterLink to="/chci-byt-soucasti" @click="toggleOverlay">Chci být součástí</RouterLink>
+    <RouterLink to="/clanky" @click="toggleOverlay">Příspěvky</RouterLink>
+  </nav>
   <RouterView />
 
 
@@ -105,7 +120,7 @@ const footerIsVisible = computed(() => {
   </footer>
 </template>
 
-<style>
+<style lang="scss">
 body {
   font-family: 'Rubik', sans-serif;
   font-weight: 400;
@@ -122,21 +137,83 @@ body {
 main {
   width: 70%;
   padding-top: 80px;
+  margin-bottom: 80px;
+
+  @media (max-width: 980px) {
+    width: 85%;
+  }
 }
 </style>
 
 <style scoped lang="scss">
 @use "assets/variables.scss" as var;
 
-header {
+header.mobile {
+  width: 85%;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  @media (min-width: 980px) {
+    display: none;
+  }
+
+  img {
+    width: 20%;
+  }
+
+  i {
+    font-size: 25px;
+  }
+}
+
+.overlay-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100vh;
+  width: 100%;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+
+  transform: translateX(-100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var.$primary-color;
+  opacity: 1;
+  visibility: visible;
+  z-index: 1001;
+
+  a {
+    color: white;
+    font-size: 30px;
+  }
+
+  &.active {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
+
+.pc-header {
   width: 70%;
   padding-top: 30px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 
+  @media (max-width: 980px) {
+    display: none;
+  }
+
+
   img {
     width: 12%;
+
   }
 
   nav {
@@ -149,7 +226,7 @@ header {
       flex-direction: row;
       background-color: var.$primary-color;
       gap: 30px;
-      height: 70%;
+      height: 80%;
       align-items: center;
       padding-left: 40px;
       padding-right: 40px;
@@ -189,9 +266,21 @@ footer {
     grid-template-columns: 1fr 2fr 1fr;
     gap: 50px;
 
+    @media (max-width: 980px) {
+      grid-template-columns: 1fr 2fr;
+      margin-bottom: 60px;
+      width: 85%;
+    }
+
+
+
     .heading {
       font-size: 35px;
       font-weight: 600;
+
+      @media (max-width: 980px) {
+        font-size: 25px;
+      }
     }
 
     .menu-container {
@@ -222,6 +311,11 @@ footer {
       flex-direction: column;
       gap: 20px;
 
+      @media (max-width: 980px) {
+
+        grid-area: 2 / 1 / 3 / 3;
+      }
+
       hr {
         width: 100%;
       }
@@ -251,6 +345,12 @@ footer {
           align-items: center;
           justify-content: center;
           border-radius: 1000px;
+
+          @media (max-width: 980px) {
+            font-size: 20px;
+            height: 40px;
+            width: 40px;
+          }
         }
 
 
@@ -276,6 +376,10 @@ footer {
       }
     }
 
+    p,
+    a {
+      font-size: 15px;
+    }
   }
 
   .logo-copy-container {

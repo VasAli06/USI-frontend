@@ -105,6 +105,18 @@ const prevPage = () => {
     color: white;
     margin-top: 60px;
     text-transform: uppercase;
+
+    @media (max-width: 600px) {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 400px) {
+      font-size: 16px;
+      padding: 5px 10px;
+    }
+
+
   }
 }
 
@@ -121,6 +133,7 @@ const prevPage = () => {
   align-items: center;
   gap: 10px;
   margin-top: 40px;
+  margin-bottom: 40px;
 
   div {
     display: flex;

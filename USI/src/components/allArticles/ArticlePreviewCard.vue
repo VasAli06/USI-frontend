@@ -62,19 +62,33 @@ function getFirstTextFromMarkdown(markdownContent) {
     flex-direction: column;
     gap: 15px;
 
+    @media (max-width: 600px) {
+        padding: 20px;
+    }
+
     .title {
         font-size: 40px;
         font-weight: 600;
+
+        @media (max-width: 600px) {
+            font-size: 25px;
+        }
     }
 
     .date-container {
         display: flex;
         flex-direction: row;
         gap: 10px;
+        align-items: center;
         font-size: 20px;
 
         i {
             color: var.$primary-color;
+        }
+
+        @media (max-width: 600px) {
+            font-size: 15px;
+            gap: 5px;
         }
     }
 
@@ -95,6 +109,11 @@ function getFirstTextFromMarkdown(markdownContent) {
         &:hover {
             transform: scale(105%);
             transition: 0.3s ease;
+        }
+
+        @media (max-width: 790px) {
+            width: fit-content;
+            font-size: 15px;
         }
     }
 }

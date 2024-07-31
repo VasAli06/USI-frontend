@@ -48,6 +48,7 @@ const randomLogosOrder = computed(() => {
     position: absolute;
     overflow: hidden;
     animation: scroll 28s linear infinite;
+    width: 100%;
 }
 
 .logo-item {
@@ -56,6 +57,7 @@ const randomLogosOrder = computed(() => {
 
 .logo-item img {
     max-height: 100px;
+    max-width: fit-content;
 }
 
 

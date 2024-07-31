@@ -89,11 +89,24 @@ function copyToClipboard() {
   gap: 20px;
   margin-bottom: 80px;
   filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.586));
+  @media (max-width: 650px) {
+    gap: 10px;
+    padding: 25px;
+  }
+  @media (max-width: 650px) {
+    margin-bottom: 30px;
+  }
 
   .wrapper {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    @media (max-width: 650px) {
+      flex-direction: column;
+      gap: 10px;
+
+    }
 
     .share-conainer {
       display: flex;
@@ -103,6 +116,15 @@ function copyToClipboard() {
 
       p {
         font-size: 25px;
+
+        @media (max-width: 650px) {
+          font-size: 20px;
+        }
+
+        @media (max-width: 400px) {
+          font-size: 18px;
+        }
+
       }
 
       a {
@@ -120,6 +142,18 @@ function copyToClipboard() {
           background-color: white;
           transition: 0.3s ease;
 
+          @media (max-width: 650px) {
+            font-size: 16px;
+            width: 35px;
+            height: 35px;
+          }
+
+          @media (max-width: 400px) {
+            font-size: 14px;
+            width: 30px;
+            height: 30px;
+          }
+
           &:hover {
             color: var.$accent-color;
             transition: 0.3s ease;
@@ -131,17 +165,31 @@ function copyToClipboard() {
     .date-container {
       display: flex;
       flex-direction: row;
+      align-items: center;
+
       gap: 10px;
       padding: 15px;
       border-radius: 400px;
       background-color: var.$accent-color;
 
+      @media (max-width: 650px) {
+        width: fit-content;
+        padding: 10px;
+      }
+
       i {
         font-size: 20px;
+        @media (max-width: 400px) {
+          font-size: 14px;
+        }
       }
 
       p {
         font-size: 20px;
+        @media (max-width: 400px) {
+          font-size: 14px;
+        }
+
       }
     }
   }
@@ -153,7 +201,6 @@ function copyToClipboard() {
   display: flex;
   flex-direction: column;
   gap: 30px;
-  margin-bottom: 150px;
 
   img {
     width: 100%;

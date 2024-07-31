@@ -30,12 +30,15 @@
     gap: 20px;
     margin-top: 100px;
     margin-bottom: 100px;
-
+ 
     .cards-container {
         display: flex;
         flex-direction: row;
         gap: 30px;
+        @media (max-width: 600px) {
+            flex-direction: column;
 
+    }
         section {
             display: flex;
             flex-direction: column;

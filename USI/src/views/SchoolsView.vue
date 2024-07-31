@@ -9,22 +9,7 @@ import { onMounted, ref, watch } from 'vue';
 const schoolsData = useSchoolsStore();
 let map = null;
 
-watch(() => schoolsData.schools, () => {
-  if (schoolsData.schools && map) {
-    // remove all markers
-    map.eachLayer((layer) => {
-      if (layer instanceof L.Marker) {
-        map.removeLayer(layer);
-      }
-    });
-    logoLinks.value = []
 
-    schoolsData.schools.forEach(school => {
-      L.marker([school.xCord, school.yCord]).addTo(map);
-      logoLinks.value.push(school.logoLink)
-    });
-  }
-}, { immediate: true });
 
 const selectedSchool = ref(null)
 const searchPhrase = ref('')
@@ -43,61 +28,24 @@ onMounted(() => {
   });
   map.addLayer(osm);
   map.fitBounds(L.geoJSON(czBoundary).getBounds());
+  watch(() => schoolsData.schools, () => {
 
-  var greenIcon = L.icon({
-    iconUrl: '/Icon-school.png',
+    if (schoolsData.schools && map) {
 
-    iconSize: [50, 50], // size of the icon
-    iconAnchor: [25, 25], // point of the icon which will correspond to marker's location
-    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-  });
+      logoLinks.value = []
 
-  // remove all markers
-  map.eachLayer((layer) => {
-    if (layer instanceof L.Marker) {
-      map.removeLayer(layer);
+      schoolsData.schools.forEach(school => {
+        logoLinks.value.push(school.logoLink)
+        L.marker([school.xCord, school.yCord]).bindPopup("<b>" + school.name + "</b><br><a href='#detail-box-link' id='schoolLink'>Klikněte zde pro informace o škole</a>").on('click', function () {
+          selectedSchool.value = school;
+        }).openPopup().addTo(map);
+
+      });
+
+
+
     }
-  });
-
-  schoolsData.schools.forEach(school => {
-    L.marker([school.xCord, school.yCord]).addTo(map);
-  });
-
-  // function getCoordinates(address) {
-  //   const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
-
-  //   fetch(url)
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       if (data.length > 0) {
-  //         const latitude = data[0].lat;
-  //         const longitude = data[0].lon;
-  //         console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-  //         // Příklad, jak přidat marker na mapu s Leafletem
-  //         L.marker([latitude, longitude]).addTo(map);
-  //       } else {
-  //         console.log('Adresa nenalezena');
-  //       }
-  //     })
-  //     .catch(error => console.error('Chyba při získávání souřadnic:', error));
-  // }
-
-  // Příklad použití
-  // getCoordinates("Preslova Praha 5, Česká republika");
-  // getCoordinates("Gymnazium Jana Keplera, Česká republika");
-
-  /*
-  var map = L.map("map");
-  
-  
-    var osm = new L.TileLayer.BoundaryCanvas("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      //boundary: czBoundary,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    });
-    map.addLayer(osm);
-  
-   // map.fitBounds(czBoundary);
-  */
+  }, { immediate: true });
 })
 </script>
 
@@ -115,7 +63,7 @@ onMounted(() => {
       <ScrollingLogos :reverse="true" :logoLinks="logoLinks"></ScrollingLogos>
     </article>
 
-    <article class="schools-list-container">
+    <article class="schools-list-container" id="detail-box-link">
       <h2>Seznam škol</h2>
       <div class="search-container">
         <i class="fa-solid fa-magnifying-glass"></i>
@@ -147,7 +95,9 @@ onMounted(() => {
 }
 
 #map {
-  border: 4px solid $primary-color;
+  border-top: 4px solid $primary-color;
+  border-bottom: 4px solid $primary-color;
+
   height: 90vh;
   width: 100%;
 

@@ -3,7 +3,7 @@ const props = defineProps(['data'])
 </script>
 
 <template>
-    <article class="school-detail-box" v-if="props.data == null">
+    <article class="school-detail-box" v-if="props.data == null" >
         <h3>Není vybrána žádná škola.</h3>
     </article>
 
