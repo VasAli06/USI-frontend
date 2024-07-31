@@ -9,8 +9,7 @@
 
       <div>
         <label for="school-name">Název Vaší školy:</label>
-        <input type="text" id="school-name" v-model="formData.schoolName" 
-          @input="formErrors.schoolName = false">
+        <input type="text" id="school-name" v-model="formData.schoolName" @input="formErrors.schoolName = false">
         <p v-if="formErrors.schoolName" class="error"><i class="fa-solid fa-circle-xmark"></i> Název školy je povinný
         </p>
       </div>
@@ -19,14 +18,14 @@
         <label for="students-contact">Kontakt na tři aktivní studenty:</label>
         <div class="row-flex">
           <p>1.</p> <input type="text" id="students-contact" v-model="formData.studentsContact[0]"
-   @input="formErrors.studentsContact = false">
-        </div>
-        <div class="row-flex">
-          <p>2.</p> <input type="text" v-model="formData.studentsContact[1]" 
             @input="formErrors.studentsContact = false">
         </div>
         <div class="row-flex">
-          <p>3.</p> <input type="text" v-model="formData.studentsContact[2]" 
+          <p>2.</p> <input type="text" v-model="formData.studentsContact[1]"
+            @input="formErrors.studentsContact = false">
+        </div>
+        <div class="row-flex">
+          <p>3.</p> <input type="text" v-model="formData.studentsContact[2]"
             @input="formErrors.studentsContact = false">
         </div>
         <p v-if="formErrors.studentsContact" class="error"><i class="fa-solid fa-circle-xmark"></i> Jeden nebo více
@@ -35,7 +34,8 @@
 
       <div>
         <label for="school-name">Stručně popište svou školu:</label>
-        <textarea name="" id="" cols="30" rows="10" v-model="formData.schoolDescription" @input="formErrors.schoolDescription = false"></textarea>
+        <textarea name="" id="" cols="30" rows="10" v-model="formData.schoolDescription"
+          @input="formErrors.schoolDescription = false"></textarea>
         <p v-if="formErrors.schoolDescription" class="error"><i class="fa-solid fa-circle-xmark"></i> Popiš školy nemůže
           být prázdný</p>
       </div>
@@ -49,8 +49,7 @@
 
       <div>
         <label for="mail">E-mail, na který Vás kontaktujeme s rozhodnutím:</label>
-        <input type="text" id="mail" v-model="formData.mail"
-          @input="formErrors.mail = false">
+        <input type="text" id="mail" v-model="formData.mail" @input="formErrors.mail = false">
         <p v-if="formErrors.mail" class="error"><i class="fa-solid fa-circle-xmark"></i> Poskytnut e-mail je neplatný
         </p>
       </div>
@@ -68,7 +67,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import axios from 'axios'
 import Joi from 'joi'
 import LoadingSpinner from '@/components/loadingSpinner.vue'
@@ -112,6 +111,13 @@ async function submitForm() {
     if (error.details[0].path[0] === 'schoolDescription') formErrors.value.schoolDescription = true;
     if (error.details[0].path[0] === 'reason') formErrors.value.reason = true;
     if (error.details[0].path[0] === 'mail') formErrors.value.mail = true;
+
+    setTimeout(() => {
+      const firstErrorElement = document.querySelector('.error');
+      if (firstErrorElement) {
+        firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
     return
   }
   try {
