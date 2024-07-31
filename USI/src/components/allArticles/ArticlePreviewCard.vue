@@ -24,6 +24,7 @@ function getFirstTextFromMarkdown(markdownContent) {
     }
     return '';
 }
+const imgRegex = /<img\s+(?:[^>]*?\s+)?src="[^"]*"(?:\s+[^>]*?)?\s*\/?>/gi;
 
 </script>
 
@@ -38,7 +39,7 @@ function getFirstTextFromMarkdown(markdownContent) {
 
         </section>
         <p class="preview-text basic-text"
-            v-html="marked(getFirstTextFromMarkdown(props.data.content)).replace('\<p\>', '').replace('\</p\>', '').trimEnd() + `.....`">
+            v-html="marked(getFirstTextFromMarkdown(props.data.content)).replace(imgRegex, '').replace('\<p\>', '').replace('\</p\>', '').trimEnd() + `.....`">
         </p>
 
         <router-link v-if="!props.inAdminPanel" :to="{ name: 'article', params: { title: props.data.title } }">
