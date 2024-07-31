@@ -9,7 +9,7 @@
 
       <div>
         <label for="school-name">Název Vaší školy:</label>
-        <input type="text" id="school-name" v-model="formData.schoolName" placeholder="Název Vaší školy"
+        <input type="text" id="school-name" v-model="formData.schoolName" 
           @input="formErrors.schoolName = false">
         <p v-if="formErrors.schoolName" class="error"><i class="fa-solid fa-circle-xmark"></i> Název školy je povinný
         </p>
@@ -19,14 +19,14 @@
         <label for="students-contact">Kontakt na tři aktivní studenty:</label>
         <div class="row-flex">
           <p>1.</p> <input type="text" id="students-contact" v-model="formData.studentsContact[0]"
-            placeholder="aktivnistudent1@vaseskola.cz" @input="formErrors.studentsContact = false">
+   @input="formErrors.studentsContact = false">
         </div>
         <div class="row-flex">
-          <p>2.</p> <input type="text" v-model="formData.studentsContact[1]" placeholder="aktivnistudent2@vaseskola.cz"
+          <p>2.</p> <input type="text" v-model="formData.studentsContact[1]" 
             @input="formErrors.studentsContact = false">
         </div>
         <div class="row-flex">
-          <p>3.</p> <input type="text" v-model="formData.studentsContact[2]" placeholder="aktivnistudent3@vaseskola.cz"
+          <p>3.</p> <input type="text" v-model="formData.studentsContact[2]" 
             @input="formErrors.studentsContact = false">
         </div>
         <p v-if="formErrors.studentsContact" class="error"><i class="fa-solid fa-circle-xmark"></i> Jeden nebo více
@@ -35,9 +35,7 @@
 
       <div>
         <label for="school-name">Stručně popište svou školu:</label>
-        <textarea name="" id="" cols="30" rows="10" v-model="formData.schoolDescription"
-          placeholder="Druhá nejlepší škola v čechách (po SSPŠ samozřejmě)"
-          @input="formErrors.schoolDescription = false"></textarea>
+        <textarea name="" id="" cols="30" rows="10" v-model="formData.schoolDescription" @input="formErrors.schoolDescription = false"></textarea>
         <p v-if="formErrors.schoolDescription" class="error"><i class="fa-solid fa-circle-xmark"></i> Popiš školy nemůže
           být prázdný</p>
       </div>
@@ -45,16 +43,15 @@
       <div>
         <label for="school-name">Zdůvodněte proč se chcete připojit k UŠI:</label>
         <textarea name="" id="" cols="30" rows="10" v-model="formData.reason"
-          placeholder="Chceme jít cestou SSPŠ, protože to je nejlepší škola"
           @input="formErrors.reason = false"></textarea>
-        <p v-if="formErrors.reason" class="error"><i class="fa-solid fa-circle-xmark"></i> Důvod nemůže bt prázdn</p>
+        <p v-if="formErrors.reason" class="error"><i class="fa-solid fa-circle-xmark"></i> Důvod nemůže být prázdný</p>
       </div>
 
       <div>
         <label for="mail">E-mail, na který Vás kontaktujeme s rozhodnutím:</label>
-        <input type="text" id="mail" v-model="formData.mail" placeholder="reditel@vaseskola.cz"
+        <input type="text" id="mail" v-model="formData.mail"
           @input="formErrors.mail = false">
-        <p v-if="formErrors.mail" class="error"><i class="fa-solid fa-circle-xmark"></i> Poskytnut e-mail je neplatn
+        <p v-if="formErrors.mail" class="error"><i class="fa-solid fa-circle-xmark"></i> Poskytnut e-mail je neplatný
         </p>
       </div>
 

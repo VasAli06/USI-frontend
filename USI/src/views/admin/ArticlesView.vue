@@ -29,7 +29,7 @@ function addArticle() {
     flex-direction: column;
     gap: 1rem;
     height: fit-content;
-
+width: 90%;
     button {
         position: absolute;
         bottom: 3rem;

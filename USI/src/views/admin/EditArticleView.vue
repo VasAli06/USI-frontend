@@ -18,7 +18,7 @@
             </button>
             <button type="submit" @click="editArticle">
                 <LoadingSpinner class="" v-if="loading" />
-                <span>Upravit článek</span>
+                <span>Uložit změny</span>
             </button>
             <p class="error" v-if="errors.emptyTitle"><i class="fa-solid fa-circle-exclamation"></i> Doplňte prosím
                 název článku</p>
