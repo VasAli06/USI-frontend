@@ -6,12 +6,15 @@ const isOverlayVisible = ref(false)
 const toggleOverlay = () => {
   isOverlayVisible.value = !isOverlayVisible.value
   console.log(isOverlayVisible)
-}</script>
+}
+</script>
 
 <template>
   <article class="Hero-container">
     <header class="Pc-header">
-      <img src="/logo-bila.png" alt="logo Unie škol inovativních">
+      <RouterLink to="/" class="img-logo">
+        <img src="/logo-bila.png" alt="logo Unie škol inovativních">
+      </RouterLink>
       <nav>
         <article>
           <RouterLink to="/">Domů</RouterLink>
@@ -31,15 +34,17 @@ const toggleOverlay = () => {
       <RouterLink to="/o-nas">Zjisti více</RouterLink>
     </section>
 
-    <img src="/hero.png" alt="">
 
 
     <header class="mobile">
-      <img src="/logo-bila.png" alt="logo Unie škol inovativních">
+      <RouterLink to="/">
+
+        <img src="/logo-bila.png" alt="logo Unie škol inovativních">
+      </RouterLink>
       <i class="fa-solid fa-bars" @click="toggleOverlay"></i>
 
     </header>
-    <nav class="overlay-nav"  :class="{'active': isOverlayVisible}">
+    <nav class="overlay-nav" :class="{ 'active': isOverlayVisible }">
       <RouterLink to="/" @click="toggleOverlay">Domů</RouterLink>
       <RouterLink to="/o-nas" @click="toggleOverlay">O nás</RouterLink>
       <RouterLink to="/skoly" @click="toggleOverlay">Školy v UŠI</RouterLink>
@@ -52,12 +57,25 @@ const toggleOverlay = () => {
 <style lang="scss" scoped>
 @use "@/assets/variables.scss" as var;
 
+.img-logo {
+    width: 150px;
+
+  }
 .Hero-container {
   width: 100vw;
   height: 85vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-image: url("/hero.png");
+
+  background-position: center;
+  background-size: cover;
+
+  @media (max-width: 500px) {
+    background-position: 67%;
+
+  }
 
   img {
     width: 100%;
@@ -76,6 +94,11 @@ const toggleOverlay = () => {
     justify-content: center;
     gap: 30px;
 
+    @media (max-width: 980px) {
+      width: 85%;
+
+    }
+
     h1 {
       width: 80%;
     }
@@ -92,6 +115,21 @@ const toggleOverlay = () => {
       font-size: 28px;
       font-weight: 600;
       transition: 0.3s ease;
+
+      @media (max-width: 980px) {
+        font-size: 20px;
+        padding: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+
+      }
+
+      @media (max-width: 400px) {
+        font-size: 15px;
+        padding: 5px;
+        padding-left: 8px;
+        padding-right: 8px;
+      }
 
       &:hover {
         transform: scale(105%);
@@ -110,45 +148,59 @@ const toggleOverlay = () => {
     justify-content: space-between;
     position: absolute;
     top: 1%;
+
     img {
-      width: 20%;
+      width: 100px;
     }
+
+    @media (max-width: 980px) {
+      width: 85%;
+
+    }
+
     @media (min-width: 980px) {
       display: none;
     }
-    i{
+
+    i {
       color: white;
       font-size: 25px;
 
     }
   }
+
   .overlay-nav {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  height: 100vh;
-  width: 100%;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  transform: translateX(-100%);
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: var.$primary-color;
-  opacity: 1;
-  visibility: visible;
-  z-index: 1000;
-
-  &.active {
-    transform: translateX(0);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 100vh;
+    width: 100%;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: translateX(-100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var.$primary-color;
     opacity: 1;
+    visibility: visible;
+    z-index: 1000;
+
+    &.active {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    a {
+      color: white;
+      font-size: 30px;
+      font-weight: 600;
+    }
+    .active-route{
+    color: #EE7B30;
+}
   }
 
-  a {
-    color: white;
-    font-size: 30px;
-  }
-}
   .Pc-header {
     z-index: 999;
     width: 70%;
@@ -163,9 +215,7 @@ const toggleOverlay = () => {
       display: none;
     }
 
-    img {
-      width: 12%;
-    }
+   
 
     nav {
       display: flex;

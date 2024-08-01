@@ -27,6 +27,7 @@ onMounted(() => {
     boundary: czBoundary,
   });
   map.addLayer(osm);
+
   map.fitBounds(L.geoJSON(czBoundary).getBounds());
   watch(() => schoolsData.schools, () => {
 
@@ -56,12 +57,12 @@ onMounted(() => {
   </main>
 
   <div id="map"></div>
-
+  <article class="schoolslogos-in-USI-container">
+    <ScrollingLogos :reverse="false" :logoLinks="logoLinks"> </ScrollingLogos>
+    <ScrollingLogos :reverse="true" :logoLinks="logoLinks"></ScrollingLogos>
+  </article>
   <main>
-    <article class="schoolslogos-in-USI-container">
-      <ScrollingLogos :reverse="false" :logoLinks="logoLinks"> </ScrollingLogos>
-      <ScrollingLogos :reverse="true" :logoLinks="logoLinks"></ScrollingLogos>
-    </article>
+
 
     <article class="schools-list-container" id="detail-box-link">
       <h2>Seznam škol</h2>
@@ -75,8 +76,8 @@ onMounted(() => {
           v-for="school in schoolsData.schools.filter(school => school.name.toLowerCase().includes(searchPhrase.toLowerCase()))"
           :key="school.id" @click="selectedSchool === school ? selectedSchool = null : selectedSchool = school"
           :class="{ 'selected': selectedSchool === school }">{{
-        school.name
-      }}</button>
+      school.name
+    }}</button>
       </article>
 
       <SchoolsDetailBox :data=selectedSchool></SchoolsDetailBox>
@@ -103,12 +104,44 @@ onMounted(() => {
 
 }
 
+@media (max-width: 768px) {
+
+
+  .leaflet-control-attribution {
+    font-size: 12px;
+    /* Smaller attribution text on mobile */
+  }
+
+  .leaflet-popup-content {
+    font-size: 14px;
+    /* Adjust popup text size for mobile */
+  }
+
+  .leaflet-container {
+    touch-action: auto;
+    /* Enable pinch-to-zoom */
+  }
+}
+
 h1 {
-  margin-bottom: 60px
+  margin-bottom: 20px;
+
+  @media (max-width: 800px) {
+    margin-bottom: 0px;
+  }
+
+}
+
+main {
+  margin-bottom: 0px;
+
+  @media (max-width: 800px) {
+    margin-bottom: 0px;
+  }
 }
 
 h2 {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .leaflet-interactive {
@@ -124,7 +157,6 @@ h2 {
 }
 
 .schools-list-container {
-  margin-top: 300px;
 
   .search-container {
     display: flex;
@@ -137,6 +169,11 @@ h2 {
       &:focus {
         outline: none;
       }
+
+      @media (max-width: 600px) {
+        font-size: 18px;
+      }
+
     }
   }
 
@@ -153,6 +190,11 @@ h2 {
       background: #d7d7d7;
       color: $primary-color;
       transition: 0.3s;
+
+      @media (max-width: 600px) {
+        padding: 0.4rem 0.8rem;
+        font-size: 15px;
+      }
 
       &:hover {
         background: #c7c7c7;

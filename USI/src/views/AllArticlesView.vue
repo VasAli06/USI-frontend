@@ -135,6 +135,8 @@ const prevPage = () => {
   margin-top: 40px;
   margin-bottom: 40px;
 
+
+
   div {
     display: flex;
     flex-direction: row;
@@ -149,6 +151,13 @@ const prevPage = () => {
     cursor: pointer;
     border-radius: 5px;
     width: 200px;
+
+    @media (max-width: 500px) {
+ width: 110px;
+ font-size: 15px;
+ padding: 6px 10px;
+
+    }
 
     &:disabled {
 

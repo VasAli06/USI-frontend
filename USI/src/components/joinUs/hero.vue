@@ -6,13 +6,16 @@ const isOverlayVisible = ref(false)
 const toggleOverlay = () => {
   isOverlayVisible.value = !isOverlayVisible.value
   console.log(isOverlayVisible)
-}</script>
+}
+</script>
 
 <template>
   <article class="Hero-JoinUsView">
 
     <header class="Pc-header">
-      <img src="/logo-bila.png" alt="logo Unie škol inovativních">
+      <RouterLink to="/" class="img-logo">
+        <img src="/logo-bila.png" alt="logo Unie škol inovativních">
+      </RouterLink>
       <nav>
         <article>
           <RouterLink to="/">Domů</RouterLink>
@@ -29,7 +32,7 @@ const toggleOverlay = () => {
     </header>
 
     <header class="mobile">
-      <img src="/logo-bila.png" alt="logo Unie škol inovativních">
+      <RouterLink to="/"> <img src="/logo-bila.png" alt="logo Unie škol inovativních"></RouterLink>
       <i class="fa-solid fa-bars" @click="toggleOverlay"></i>
 
     </header>
@@ -43,7 +46,6 @@ const toggleOverlay = () => {
 
 
 
-    <img src="/Pridej-se-k-nam.png" alt="">
     <article class="text-container">
       <h1>Chci být součástí</h1>
       <p>Pro přijetí do Unie Škol Inovativních je třeba splnit následující podmínky:</p>
@@ -55,12 +57,26 @@ const toggleOverlay = () => {
 <style lang="scss" scoped>
 @use "@/assets/variables.scss" as var;
 
+.img-logo {
+  width: 150px;
+
+}
 
 .Hero-JoinUsView {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  background-image: url("/Pridej-se-k-nam.png");
+  height: 70vh;
+  width: 100%;
+
+  @media (max-width: 410px) {
+    background-position: 16%;
+
+
+
+  }
 
   img {
     width: 100vw;
@@ -75,12 +91,24 @@ const toggleOverlay = () => {
     gap: 20px;
     bottom: 5%;
 
+    @media (max-width: 980px) {
+      width: 85%;
+
+    }
+    @media (max-width: 410px) {
+      gap: 10px;
+    }
+
     p {
       font-size: 30px;
 
       @media (max-width: 900px) {
         font-size: 20px;
       }
+      @media (max-width: 410px) {
+        font-size: 15px;
+      }
+
     }
 
 
@@ -96,8 +124,13 @@ const toggleOverlay = () => {
     position: absolute;
     top: 1%;
 
+    @media (max-width: 980px) {
+      width: 85%;
+
+    }
+
     img {
-      width: 20%;
+      width: 100px;
     }
 
     @media (min-width: 980px) {
@@ -116,7 +149,7 @@ const toggleOverlay = () => {
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    height: 100vh;
+    min-height: -webkit-fill-available;
     width: 100%;
     transition: transform 0.3s ease, opacity 0.3s ease;
     transform: translateX(-100%);
@@ -136,7 +169,11 @@ const toggleOverlay = () => {
     a {
       color: white;
       font-size: 30px;
+      font-weight: 600;
     }
+    .active-route{
+    color: #EE7B30;
+}
   }
 
   .Pc-header {
@@ -152,9 +189,7 @@ const toggleOverlay = () => {
       display: none;
     }
 
-    img {
-      width: 12%;
-    }
+
 
     nav {
       display: flex;

@@ -1,17 +1,17 @@
 <template>
-    <article class="about-USI-container">
+  <article class="about-USI-container">
 
-        <section>
+    <section>
 
-            <h2>Co je UŠI?</h2>
-            <p class="basic-text">Unie škol inovativních spojuje pokrokové žáky kantory i vedení, za účelem sdílení
-                dobré
-                praxe a pro možnost
-                organizace nejrůznějších akcí, které mohou jak studenty tak pedagogy posunout.</p>
-        </section>
-        <img src="/logo-cerna-zkracena.png" alt="">
+      <h2>Co je UŠI?</h2>
+      <p class="basic-text">Unie škol inovativních spojuje pokrokové žáky kantory i vedení, za účelem sdílení
+        dobré
+        praxe a pro možnost
+        organizace nejrůznějších akcí, které mohou jak studenty tak pedagogy posunout.</p>
+    </section>
+    <img src="/logo-cerna-zkracena.png" alt="">
 
-    </article>
+  </article>
 
 </template>
 <style lang="scss" scoped>
@@ -25,14 +25,32 @@
   justify-items: space-between;
   margin-bottom: 100px;
   width: 100%;
+  @media (max-width: 600px) {
+    margin-bottom: 80px;
+  }
+
+  @media (max-width: 800px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+
 
   h2 {
     padding-bottom: 20px;
+
+    @media (max-width: 600px) {
+      padding-bottom: 0px;
+    }
+
   }
 
   p {
-    font-size: 25px;
     line-height: 35px;
+    @media (max-width: 600px) {
+      line-height: 30px;
+    }
   }
 
   img {

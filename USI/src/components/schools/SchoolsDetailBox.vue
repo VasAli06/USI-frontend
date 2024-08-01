@@ -3,7 +3,7 @@ const props = defineProps(['data'])
 </script>
 
 <template>
-    <article class="school-detail-box" v-if="props.data == null" >
+    <article class="school-detail-box" v-if="props.data == null">
         <h3>Není vybrána žádná škola.</h3>
     </article>
 
@@ -40,16 +40,25 @@ const props = defineProps(['data'])
     background-color: #F8F8F8;
     padding: 40px;
     display: flex;
+    margin-top: 40px;
     flex-direction: column;
     gap: 20px;
     border-radius: 40px;
     filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.473));
-    margin-bottom: 200px;
+    margin-bottom: 100px;
+    @media (max-width: 600px) {
+        padding: 30px;
+        gap: 5px;
+    }
 
     h3 {
         font-size: 40px;
         font-weight: 600;
         padding-bottom: 10px;
+
+        @media (max-width: 600px) {
+            font-size: 25px;
+        }
     }
 
     section {
@@ -61,12 +70,22 @@ const props = defineProps(['data'])
         div {
             display: flex;
             flex-direction: row;
+            align-items: center;
             font-size: 20px;
+
+            @media (max-width: 600px) {
+                font-size: 14px;
+            }
 
             i {
                 width: 40px;
                 font-size: 25px;
                 color: var.$accent-color;
+
+                @media (max-width: 600px) {
+                    font-size: 20px;
+                    width: 30px;
+                }
             }
 
             a {
@@ -78,6 +97,10 @@ const props = defineProps(['data'])
         .about-school-title {
             font-size: 30px;
             font-weight: 500;
+
+            @media (max-width: 600px) {
+                font-size: 20px;
+            }
         }
     }
 }

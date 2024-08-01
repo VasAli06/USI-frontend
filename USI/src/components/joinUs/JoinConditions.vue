@@ -1,31 +1,31 @@
 <template>
 
-<article class="container">
-      <section class="div1">
-        <i class="fa-solid fa-square-check"></i>
-        <p>
-          Souhlas ředitele/ředitelky. </p>
-      </section>
-      <section class="div2">
-        <i class="fa-solid fa-hand-holding-dollar"></i>
-        <p>Zaplatit členský příspěvek v hodnotě 10 000Kč.</p>
-      </section>
-      <section class="div3">
-        <i class="fa-solid fa-comments"></i>
-        <p>Projít výběrovým řízením, obsahující pohovor s HR managery, kteří do pěti školních dnů sdělí
-          své rozhodnutí a jeho důvod.</p>
-      </section>
-      <section class="div4">
-        <div>
-          <i class="fa-solid fa-graduation-cap"></i>
-          <i class="fa-solid fa-graduation-cap"></i>
-          <i class="fa-solid fa-graduation-cap"></i>
-        </div>
+  <article class="container">
+    <section class="div1">
+      <i class="fa-solid fa-square-check"></i>
+      <p>
+        Souhlas ředitele/ředitelky. </p>
+    </section>
+    <section class="div2">
+      <i class="fa-solid fa-hand-holding-dollar"></i>
+      <p>Zaplatit členský příspěvek v hodnotě 10 000Kč.</p>
+    </section>
+    <section class="div3">
+      <i class="fa-solid fa-comments"></i>
+      <p>Projít výběrovým řízením, obsahující pohovor s HR managery, kteří do pěti školních dnů sdělí
+        své rozhodnutí a jeho důvod.</p>
+    </section>
+    <section class="div4">
+      <div>
+        <i class="fa-solid fa-graduation-cap"></i>
+        <i class="fa-solid fa-graduation-cap"></i>
+        <i class="fa-solid fa-graduation-cap"></i>
+      </div>
 
-        <p>Mít na škole alespoň tři aktivní studenty, kteří mají zájem se podílet na společné práci unie.
-        </p>
-      </section>
-    </article>
+      <p>Mít na škole alespoň tři aktivní studenty, kteří mají zájem se podílet na společné práci unie.
+      </p>
+    </section>
+  </article>
 </template>
 
 <style lang="scss" scoped>
@@ -38,12 +38,17 @@
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(6, 1fr);
 
+  @media (max-width: 550px) {
+    display: flex;
+    flex-direction: column;
+  }
+
   section {
     background-color: #F8F8F8;
     font-size: 25px;
     display: flex;
     flex-direction: column;
-    gap:20px;
+    gap: 20px;
     align-items: center;
     justify-content: center;
     filter: drop-shadow(0 4px 3px rgb(0, 0, 0));
@@ -52,17 +57,28 @@
     padding: 30px;
     text-align: center;
     line-height: 28px;
+    @media (max-width: 410px) {
+      font-size: 18px;
+      padding: 20px;
+      gap: 10px;
+    }
+
     div {
       display: flex;
       flex-direction: row;
       gap: 15px;
 
-  
+
     }
+
     i {
-        color: var.$primary-color;
-        font-size: 40px
-      }
+      color: var.$primary-color;
+      font-size: 40px;
+      @media (max-width: 410px) {
+      font-size: 30px;
+   
+    }
+    }
   }
 }
 

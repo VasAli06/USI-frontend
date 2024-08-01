@@ -47,6 +47,9 @@
     justify-content: center;
     gap: 20px;
     height: 100%;
+    @media (max-width: 400px) {
+      gap: 0px;
+    }
 
     p {
       font-size: 70px;
@@ -65,7 +68,7 @@
 
       }
       @media (max-width: 400px) {
-        font-size: 20px;
+        font-size: 28px;
       }
 
     }

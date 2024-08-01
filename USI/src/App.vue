@@ -31,7 +31,9 @@ const toggleOverlay = () => {
 
 <template>
   <header v-if="isVisible" class="pc-header">
-    <img src="/logo-cerna.png" alt="logo Unie škol inovativních">
+    <RouterLink to="/" class="img-logo">
+      <img src="/logo-cerna.png" alt="logo Unie škol inovativních">
+    </RouterLink>
     <nav>
       <article>
         <RouterLink to="/">Domů</RouterLink>
@@ -45,7 +47,9 @@ const toggleOverlay = () => {
     </nav>
   </header>
   <header class="mobile" v-if="isVisible">
+    <RouterLink to="/" class="img-logo">
     <img src="/logo-cerna.png" alt="logo Unie škol inovativních">
+  </RouterLink>
     <i class="fa-solid fa-bars" @click="toggleOverlay"></i>
 
   </header>
@@ -160,7 +164,7 @@ header.mobile {
   }
 
   img {
-    width: 20%;
+    width: 100px;
   }
 
   i {
@@ -189,8 +193,12 @@ header.mobile {
   a {
     color: white;
     font-size: 30px;
-  }
+    font-weight: 600;
 
+  }
+  .active-route{
+    color: #EE7B30;
+}
   &.active {
     transform: translateX(0);
     opacity: 1;
@@ -211,8 +219,8 @@ header.mobile {
   }
 
 
-  img {
-    width: 12%;
+  .img-logo {
+    width: 150px;
 
   }
 

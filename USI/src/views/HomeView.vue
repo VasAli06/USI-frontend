@@ -64,10 +64,13 @@ watch(() => schoolsStore.schools, () => {
   display: flex;
   flex-direction: column;
   gap: 40px;
-  margin-bottom: 100px;
 
   h2 {
     margin-bottom: -15px;
+    @media (max-width: 600px) {
+      margin-bottom: -35px;
+    }
+
   }
 }
 
@@ -80,7 +83,12 @@ watch(() => schoolsStore.schools, () => {
   h2 {
     margin-bottom: 60px;
     text-align: center;
+
+    @media (max-width: 400px) {
+      margin-bottom: 20px;
+    }
   }
+
 
 }
 </style>
