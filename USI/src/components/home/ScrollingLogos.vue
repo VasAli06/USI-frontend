@@ -1,102 +1,68 @@
 <template>
-    <div class="logo-container">
-        <div class="logo-slider-wrapper">
-            <div class="logo-slider" :class="{ 'animation-reverse': reverse }">
-                <div v-for="(logo, index) in randomLogosOrder" :key="index" class="logo-item">
-                    <img :src="logo" alt="School Logo">
-                </div>
-                <div v-for="(logo, index) in randomLogosOrder" :key="index + logoLinks.length" class="logo-item">
-                    <img :src="logo" alt="School Logo">
-                </div>
-            </div>
-        </div>
-    </div>
+  <Vue3Marquee :duration="marqueeDuration" :direction="props.reverse">
+    <img v-for="(image, index) in shuffledLogoLinks" :key="index" :src="image" @click="handleLogoClick(image)" />
+  </Vue3Marquee>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { Vue3Marquee } from 'vue3-marquee'
+import { computed, ref, watch } from 'vue'
+import { useSchoolsStore } from '@/stores/schools';
+import { useRouter, useRoute } from 'vue-router'
+const router = useRouter()
+const route = useRoute()
+const schoolsStore = useSchoolsStore();
+const logoLinks = ref([])
 
+
+const marqueeDuration = computed(() => 3 * logoLinks.value.length);
+
+watch(() => schoolsStore.schools, () => {
+  logoLinks.value = schoolsStore.schools.map(school => school.logoLink)
+}, {
+  immediate: true
+})
+function handleLogoClick(data) {
+  router.push({ path: '/skoly', hash: '#detail-box-link' });
+
+  schoolsStore.selectedSchool  =schoolsStore.schools.find(school => school.logoLink === data)
+}
 const props = defineProps({
-    reverse: {
-        type: Boolean,
-        default: false
-    },
-    logoLinks: {
-        type: Array,
-        default: () => []
-    }
+  reverse: {
+    type: String,
+  }
 });
 
 function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
 }
 
-const randomLogosOrder = computed(() => {
-    return shuffleArray([...props.logoLinks]); // Spread operator to avoid mutating original array
-});
+const shuffledLogoLinks = computed(() => shuffleArray(logoLinks.value));
 </script>
 
 <style lang="scss" scoped>
-.logo-container {
-    width: 100%;
-    height: 120px;
-    overflow: hidden; 
-}
+img {
+  max-height: 100px;
+  max-width: fit-content;
+  margin-right: 100px;
+  transition: 0.4s ease;
+  padding-top: 5px;
 
-.logo-slider-wrapper {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-}
+  &:hover {
+    cursor: pointer;
+    transform: scale(105%);
+    transition: 0.4s ease;
+  }
 
-.logo-slider {
-    display: flex;
-    animation: scroll 10s linear infinite;
-    width: calc(200% + 100px); 
-}
+  @media (max-width: 500px) {
+    max-height: 50px;
+    margin-right: 50px;
 
-.logo-item {
-    flex-shrink: 0;
-    margin-right: 100px;
-    @media (max-width: 500px) {
-        margin-right: 50px;
-    }
-}
-
-.logo-item img {
-    max-height: 100px;
-    max-width: fit-content;
-    @media (max-width: 500px) {
-        max-height: 50px;
-    }
-}
-
-.animation-reverse {
-    animation: scroll-reverse 10s linear infinite;
-}
-
-@keyframes scroll {
-    0% {
-        transform: translateX(0%);
-    }
-
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-@keyframes scroll-reverse {
-    0% {
-        transform: translateX(-50%);
-    }
-
-    100% {
-        transform: translateX(0%);
-    }
+  }
 }
 </style>

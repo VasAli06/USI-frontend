@@ -67,7 +67,8 @@ const toggleOverlay = () => {
   flex-direction: column;
   align-items: center;
   position: relative;
-  background-image: url("/Pridej-se-k-nam.png");
+  background-image: url("/Pridej-se-k-nam.webp");
+  background-size: cover;
   height: 70vh;
   width: 100%;
 

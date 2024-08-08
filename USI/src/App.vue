@@ -48,8 +48,8 @@ const toggleOverlay = () => {
   </header>
   <header class="mobile" v-if="isVisible">
     <RouterLink to="/" class="img-logo">
-    <img src="/logo-cerna.png" alt="logo Unie škol inovativních">
-  </RouterLink>
+      <img src="/logo-cerna.png" alt="logo Unie škol inovativních">
+    </RouterLink>
     <i class="fa-solid fa-bars" @click="toggleOverlay"></i>
 
   </header>
@@ -87,11 +87,10 @@ const toggleOverlay = () => {
         <p class="heading">Sledujte nás</p>
         <section class="social">
           <a href="https://www.instagram.com/unie_skol_inovativnich/"><i class="fa-brands fa-instagram"></i></a>
-          <a href=""> <i class="fa-brands fa-facebook"></i></a>
           <a href="https://www.youtube.com/@unieskolinovativnich"><i class="fa-brands fa-youtube"></i></a>
           <a href="https://www.linkedin.com/company/unie-%C5%A1kol-inovativn%C3%ADch/"><i
               class="fa-brands fa-linkedin"></i></a>
-          <a href=""><i class="fa-brands fa-twitter"></i></a>
+          <a href="https://x.com/unie_skol_in"><i class="fa-brands fa-twitter"></i></a>
         </section>
         <hr>
         <section class="contact">
@@ -113,7 +112,11 @@ const toggleOverlay = () => {
     </article>
 
     <article class="logo-copy-container">
-      <img src="/logo-bila-zkracena.png" alt="">
+      <img src="/logo-bila-zkracena.png" alt="logo">
+
+      <p class="credit">
+        Web vytvořili studenti <a href="https://naxera.eu/">Alex Naxera</a> a <a href="https://www.ranajakub.com/">Jakub
+          Rana</a> </p>
       <section>
         <i class="fa-regular fa-copyright"></i>
         <p>{{ new Date().getFullYear() }}</p>
@@ -125,6 +128,14 @@ const toggleOverlay = () => {
 </template>
 
 <style lang="scss">
+.leaflet-control-attribution a {
+  display: none;
+}
+
+.marquee {
+  margin-bottom: 20px;
+}
+
 body {
   font-family: 'Rubik', sans-serif;
   font-weight: 400;
@@ -146,6 +157,10 @@ main {
   @media (max-width: 980px) {
     width: 85%;
   }
+}
+
+.nobreak {
+  white-space: nowrap;
 }
 </style>
 
@@ -196,9 +211,11 @@ header.mobile {
     font-weight: 600;
 
   }
-  .active-route{
+
+  .active-route {
     color: #EE7B30;
-}
+  }
+
   &.active {
     transform: translateX(0);
     opacity: 1;
@@ -318,14 +335,19 @@ footer {
       display: flex;
       flex-direction: column;
       gap: 20px;
+      width: 125%;
 
       @media (max-width: 980px) {
-
+        width: 100%;
         grid-area: 2 / 1 / 3 / 3;
       }
 
       hr {
         width: 100%;
+        @media (max-width: 980px) {
+          width: 250px;
+        }
+
       }
 
       .social {
@@ -397,9 +419,28 @@ footer {
     gap: 15px;
     padding-bottom: 30px;
 
+    .credit {
+      font-size: 15px;
+      transition: 0.4s ease;
+
+      a {
+        &:hover {
+          color: white;
+          transition: 0.4s ease;
+        }
+      }
+
+      @media (max-width: 500px) {
+        font-size: 12px;
+      }
+
+
+    }
+
     section {
       display: flex;
       flex-direction: row;
+      align-items: center;
       gap: 5px;
       color: white;
 

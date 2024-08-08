@@ -8,7 +8,7 @@
 
             <div>
                 <label for="password">Heslo</label>
-                <input name="password" type="password" v-model="password" placeholder="SuperSilnéHeslo420">
+                <input name="password" type="password" v-model="password" placeholder="Super tajné heslo :-D">
                 <p v-if="wrongPassword" class="error">Špatné heslo</p>
             </div>
 
@@ -54,4 +54,10 @@ async function login() {
 
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.login-view{
+    margin-top: 80Px;
+    margin-bottom: 80px;
+    width: 75%;
+}
+</style>

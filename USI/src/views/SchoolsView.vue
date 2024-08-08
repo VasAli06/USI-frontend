@@ -2,7 +2,6 @@
 import ScrollingLogos from '@/components/home/ScrollingLogos.vue';
 import SchoolsDetailBox from '@/components/schools/SchoolsDetailBox.vue';
 import { useSchoolsStore } from '@/stores/schools';
-import SchoolListItem from '@/components/schools/SchoolListItem.vue';
 import { czBoundary } from "../assets/geodata.js";
 import { onMounted, ref, watch } from 'vue';
 
@@ -11,16 +10,15 @@ let map = null;
 
 
 
-const selectedSchool = ref(null)
 const searchPhrase = ref('')
 const logoLinks = ref([])
 
 onMounted(() => {
   var options = {
     maxZoom: 15,
-    minZoom: 8
+    minZoom: 7.4
   };
-
+ 
   map = L.map("map", options);
 
   var osm = new L.TileLayer.BoundaryCanvas("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -38,7 +36,12 @@ onMounted(() => {
       schoolsData.schools.forEach(school => {
         logoLinks.value.push(school.logoLink)
         L.marker([school.xCord, school.yCord]).bindPopup("<b>" + school.name + "</b><br><a href='#detail-box-link' id='schoolLink'>Klikněte zde pro informace o škole</a>").on('click', function () {
-          selectedSchool.value = school;
+          schoolsData.selectedSchool = school;
+
+
+        }).on('mouseover', function (e) {
+          schoolsData.selectedSchool = school;
+          this.openPopup();
         }).openPopup().addTo(map);
 
       });
@@ -48,18 +51,21 @@ onMounted(() => {
     }
   }, { immediate: true });
 })
+
 </script>
 
 <template>
   <main>
     <h1>Školy zapojené v UŠI</h1>
-    <h2>Interaktivní mapa škol</h2>
+    <h2> <span>
+        Interaktivní
+      </span> mapa škol</h2>
   </main>
 
   <div id="map"></div>
   <article class="schoolslogos-in-USI-container">
-    <ScrollingLogos :reverse="false" :logoLinks="logoLinks"> </ScrollingLogos>
-    <ScrollingLogos :reverse="true" :logoLinks="logoLinks"></ScrollingLogos>
+    <ScrollingLogos :reverse="'normal'" :logoLinks="logoLinks"> </ScrollingLogos>
+    <ScrollingLogos :reverse="'reverse'" :logoLinks="logoLinks"></ScrollingLogos>
   </article>
   <main>
 
@@ -70,17 +76,17 @@ onMounted(() => {
         <i class="fa-solid fa-magnifying-glass"></i>
         <input type="text" placeholder="Hledat v seznamu" v-model="searchPhrase">
       </div>
-
       <article class="schools-list">
         <button
           v-for="school in schoolsData.schools.filter(school => school.name.toLowerCase().includes(searchPhrase.toLowerCase()))"
-          :key="school.id" @click="selectedSchool === school ? selectedSchool = null : selectedSchool = school"
-          :class="{ 'selected': selectedSchool === school }">{{
+          :key="school.id"
+          @click="schoolsData.selectedSchool === school ? schoolsData.selectedSchool = null : schoolsData.selectedSchool = school"
+          :class="{ 'selected': schoolsData.selectedSchool === school }">{{
       school.name
     }}</button>
       </article>
 
-      <SchoolsDetailBox :data=selectedSchool></SchoolsDetailBox>
+      <SchoolsDetailBox :data=schoolsData.selectedSchool></SchoolsDetailBox>
     </article>
   </main>
 
@@ -96,12 +102,15 @@ onMounted(() => {
 }
 
 #map {
-  border-top: 4px solid $primary-color;
-  border-bottom: 4px solid $primary-color;
+  border: 4px solid $primary-color;
+  height: 75vh;
+  width: 75%;
+  border-radius: 24px;
 
-  height: 90vh;
-  width: 100%;
-
+  @media (max-width: 800px) {
+    height: 65vh;
+    width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -142,6 +151,10 @@ main {
 
 h2 {
   margin-bottom: 10px;
+
+  span {
+    color: $accent-color;
+  }
 }
 
 .leaflet-interactive {
@@ -213,7 +226,7 @@ h2 {
   flex-direction: column;
   align-items: center;
   margin-top: 100px;
-  gap: 40px;
+  gap: 100px;
   height: 1px;
   width: 100%;
   margin-bottom: 200px;

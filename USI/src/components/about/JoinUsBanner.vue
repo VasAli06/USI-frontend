@@ -5,7 +5,7 @@
 <template>
 
   <article class="join-us-banner">
-    <img src="/join-us-banner.png" alt="">
+    <img src="/join-us-banner.webp" alt="obrazek studentu">
     <section>
       <p>Zaujali jsme Vás?</p>
 

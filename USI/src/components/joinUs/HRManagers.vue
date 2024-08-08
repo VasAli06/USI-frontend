@@ -6,12 +6,12 @@
         <article class="cards-container">
 
             <section>
-                <img src="/HR1.png" alt="">
+                <img src="/HR1.png" alt="HR-manager-foto">
                 <p class="name">Radovan Kosík</p>
                 <p class="email">kosik@unieskolinovativnich.cz</p>
             </section>
             <section>
-                <img src="/HR1.png" alt="">
+                <img src="/HR2.png" alt="HR-manager-foto">
                 <p class="name">Hynek Novák</p>
                 <p class="email">novak@unieskolinovativnich.cz</p>
             </section>

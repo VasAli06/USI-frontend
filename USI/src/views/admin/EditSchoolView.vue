@@ -22,7 +22,7 @@
 
             <div class="contact">
                 <div class="contact-person input-wrapper">
-                    <label for="contactPerson">Kontaktní osoba</label>
+                    <label for="contactPerson">Kontaktní email adresa</label>
                     <input id="contactPerson" type="text" v-model="school.contactPerson"
                         placeholder="Kontaktní osoba" />
                 </div>
@@ -58,7 +58,7 @@
                 </button>
                 <button type="submit" @click="editSchool">
                     <LoadingSpinner class="" v-if="loading" />
-                    <span>Upravit školu</span>
+                    <span>Uložit změny</span>
                 </button>
             </div>
         </form>

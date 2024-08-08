@@ -58,16 +58,17 @@ const toggleOverlay = () => {
 @use "@/assets/variables.scss" as var;
 
 .img-logo {
-    width: 150px;
+  width: 150px;
 
-  }
+}
+
 .Hero-container {
   width: 100vw;
   height: 85vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url("/hero.png");
+  background-image: url("/hero.webp");
 
   background-position: center;
   background-size: cover;
@@ -101,6 +102,20 @@ const toggleOverlay = () => {
 
     h1 {
       width: 80%;
+      animation-duration: 0.8s;
+      animation-name: FadeIn;
+      animation-timing-function: ease;
+    }
+
+    @keyframes FadeIn {
+      from {
+        transform: translateX(-100%);
+      }
+
+      to {
+        transform: translateX(0%);
+
+      }
     }
 
     a {
@@ -196,9 +211,10 @@ const toggleOverlay = () => {
       font-size: 30px;
       font-weight: 600;
     }
-    .active-route{
-    color: #EE7B30;
-}
+
+    .active-route {
+      color: #EE7B30;
+    }
   }
 
   .Pc-header {
@@ -215,7 +231,7 @@ const toggleOverlay = () => {
       display: none;
     }
 
-   
+
 
     nav {
       display: flex;

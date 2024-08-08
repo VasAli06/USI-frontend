@@ -8,8 +8,9 @@
     </section>
     <section class="div2">
       <i class="fa-solid fa-hand-holding-dollar"></i>
-      <p>Zaplatit členský příspěvek v hodnotě 10 000Kč.</p>
-    </section>
+      <p>Zaplatit členský příspěvek v hodnotě <span class="nobreak">10 000Kč.</span></p>
+    </section>   
+
     <section class="div3">
       <i class="fa-solid fa-comments"></i>
       <p>Projít výběrovým řízením, obsahující pohovor s HR managery, kteří do pěti školních dnů sdělí

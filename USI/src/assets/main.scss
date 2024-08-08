@@ -12,7 +12,7 @@ div#app {
 }
 
 h1 {
-    font-size: 80px;
+    font-size: 70px;
     font-weight: 700;
 
     @media (max-width: 980px) {
@@ -109,7 +109,4 @@ input.title {
         border-color: $accent-color;
         outline: none;
     }
-}
-.active-route{
-    color: #EE7B30;
 }

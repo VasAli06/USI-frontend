@@ -22,41 +22,6 @@ import { ref, onMounted } from "vue";
 
 const globalStore = useGlobalStore();
 const router = useRouter();
-// const aside = ref(null);
-// let grabbableLineXcoord = 0;
-// let mouseDown = false;
-
-// function getGrabbableLineXcoord() {
-//     return aside.value.getBoundingClientRect().right;
-// }
-
-// onMounted(() => {
-//     grabbableLineXcoord = getGrabbableLineXcoord();
-
-//     window.addEventListener('mousemove', (e) => {
-//         if (e.clientX > grabbableLineXcoord - 30 && e.clientX < grabbableLineXcoord + 30) {
-//             document.body.style.cursor = 'col-resize';
-//             if (mouseDown) {
-//                 aside.value.style.width = e.clientX + 'px';
-//                 grabbableLineXcoord = Number(aside.value.style.width.replace('px', ''));
-//             }
-//         } else {
-//             document.body.style.cursor = 'default';
-//         }
-//     });
-// });
-
-// window.addEventListener('resize', () => {
-//     grabbableLineXcoord = getGrabbableLineXcoord();
-// });
-
-// window.addEventListener('mouseup', () => {
-//     mouseDown = false;
-// });
-
-// window.addEventListener('mousedown', () => {
-//     mouseDown = true;
-// });
 
 if (globalStore.userId === null) {
     router.push('/login');

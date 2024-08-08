@@ -64,7 +64,8 @@ const prevPage = () => {
 
 <template>
   <main>
-    <h1>Publikované články</h1>
+    
+    <h1 class="">Publikované články</h1>
     <article v-for="({ yearMonth, monthName, articles }) in shownArticles" :key="yearMonth" class="month-container">
       <p class="month-name">{{ monthName }}</p>
       <article class="cards-container">
@@ -86,10 +87,7 @@ const prevPage = () => {
 <style lang="scss" scoped>
 @use "@/assets/variables.scss" as var;
 
-//main {
-//width: 75%;
-//padding-top: 80px;
-//margin-bottom: 100px;
+
 
 .month-container {
   display: flex;

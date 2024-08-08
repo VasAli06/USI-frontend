@@ -45,7 +45,7 @@ watch(() => schoolsStore.schools, () => {
     <AboutUSI></AboutUSI>
 
     <article class="articles-container">
-      <h2>Nejnovější články</h2>
+      <h2>Nejnovější příspěvky</h2>
       <ArticlePreviewCard v-for="article in twoLatestArticles" :key="article.id" :data="article" />
     </article>
 
@@ -53,7 +53,7 @@ watch(() => schoolsStore.schools, () => {
   </main>
   <article class="schools-in-USI-container">
     <h2>Zapojené školy do UŠI</h2>
-    <ScrollingLogos :logoLinks></ScrollingLogos>
+    <ScrollingLogos></ScrollingLogos>
   </article>
 </template>
 
@@ -81,7 +81,7 @@ watch(() => schoolsStore.schools, () => {
   margin-bottom: 100px;
 
   h2 {
-    margin-bottom: 60px;
+    margin-bottom: 30px;
     text-align: center;
 
     @media (max-width: 400px) {
